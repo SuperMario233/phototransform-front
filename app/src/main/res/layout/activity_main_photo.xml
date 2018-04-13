@@ -1,9 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".main_photo">
+    tools:context=".main_photo"
+    android:orientation="vertical">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="50dp">
 
-</android.support.constraint.ConstraintLayout>
+    <ImageView
+        android:id="@+id/sign_in"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@android:drawable/sym_def_app_icon"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <TextView
+        android:id="@+id/Freestyle"
+        android:layout_width="163dp"
+        android:layout_height="50dp"
+        android:layout_margin="0dp"
+        android:text="FreeStyle"
+        android:textSize="36sp"
+        android:textStyle="bold|italic"
+        android:layout_centerInParent="true"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/gallery"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:srcCompat="@android:drawable/ic_menu_gallery"
+        android:layout_alignParentEnd="true"
+        tools:layout_editor_absoluteX="318dp"
+        tools:layout_editor_absoluteY="1dp" />
+
+</RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="480dp">
+
+        <ImageView
+            android:id="@+id/camera_in"
+            android:layout_width="360dp"
+            android:layout_height="480dp"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="false"
+            android:background="@android:color/background_dark"
+            android:clickable="false"
+            app:srcCompat="@android:color/black"
+            tools:layout_editor_absoluteX="20dp"
+            tools:layout_editor_absoluteY="20dp" />
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/photo_button"
+        android:layout_width="match_parent"
+        android:layout_height="41dp"
+        android:layout_weight="1"
+        app:srcCompat="@android:drawable/ic_menu_camera"
+        tools:layout_editor_absoluteX="172dp"
+        tools:layout_editor_absoluteY="473dp" />
+
+</LinearLayout>
