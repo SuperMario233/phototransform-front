@@ -50,7 +50,9 @@
         <activity android:name=".profile" />
         <activity android:name=".sign_up" />
         <activity android:name=".log_in" />
-        <activity android:name=".choose_filter" />
+        <activity android:name=".choose_filter"
+            android:label="@string/choose_filter">
+        </activity>
         <activity android:name=".prepublish"></activity>
     </application>
 
