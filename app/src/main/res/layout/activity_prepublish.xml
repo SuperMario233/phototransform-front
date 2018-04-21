@@ -24,18 +24,20 @@
             android:layout_height="50dp"
             android:layout_alignParentEnd="true"
             app:srcCompat="@android:drawable/ic_menu_share" />
+
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="480dp">
+        android:layout_height="400dp">
 
         <ImageView
             android:id="@+id/main_image"
             android:layout_width="360dp"
-            android:layout_height="480dp"
+            android:layout_height="400dp"
             android:layout_centerHorizontal="true"
             app:srcCompat="@android:color/darker_gray" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -56,7 +58,16 @@
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            app:srcCompat="@android:drawable/stat_sys_download" />
+            app:srcCompat="@android:drawable/stat_sys_download_done" />
+
+        <ImageView
+            android:id="@+id/filter_pub"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@android:drawable/ic_menu_set_as" />
+
     </RelativeLayout>
 
 </LinearLayout>

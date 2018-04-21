@@ -33,8 +33,9 @@
         android:id="@+id/gallery"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        app:srcCompat="@android:drawable/ic_menu_gallery"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
+        app:srcCompat="@android:drawable/ic_menu_gallery"
         tools:layout_editor_absoluteX="318dp"
         tools:layout_editor_absoluteY="1dp" />
 
@@ -42,27 +43,44 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="480dp">
+        android:layout_height="400dp">
+
+        <TextureView
+            android:id="@+id/camera_in"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp" />
 
         <ImageView
-            android:id="@+id/camera_in"
-            android:layout_width="360dp"
-            android:layout_height="480dp"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="false"
-            android:background="@android:color/background_dark"
-            android:clickable="false"
-            app:srcCompat="@android:color/black"
-            tools:layout_editor_absoluteX="20dp"
-            tools:layout_editor_absoluteY="20dp" />
+            android:id="@+id/photo_show"
+            android:layout_width="300dp"
+            android:layout_height="400dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="0dp"
+            app:srcCompat="@android:color/background_light" />
+
     </RelativeLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
     <ImageView
         android:id="@+id/photo_button"
-        android:layout_width="match_parent"
-        android:layout_height="41dp"
-        android:layout_weight="1"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
         app:srcCompat="@android:drawable/ic_menu_camera"
         tools:layout_editor_absoluteX="172dp"
         tools:layout_editor_absoluteY="473dp" />
+    </RelativeLayout>
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Button" />
 </LinearLayout>
