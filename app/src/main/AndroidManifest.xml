@@ -47,11 +47,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".profile" />
         <activity android:name=".sign_up" />
         <activity android:name=".log_in" />
         <activity android:name=".choose_filter" />
-        <activity android:name=".prepublish"></activity>
+        <activity android:name=".prepublish" />
+        <activity
+            android:name=".profile"
+            android:label="@string/title_activity_profile"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
