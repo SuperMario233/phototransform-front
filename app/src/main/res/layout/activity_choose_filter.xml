@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:background="#00000000"
+        android:scrollbars="none"
         app:layout_constraintBottom_toTopOf="@+id/choose_filter_more_function"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
