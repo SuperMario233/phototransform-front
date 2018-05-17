@@ -41,14 +41,16 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".main_photo">
+        </activity>
+        <activity android:name=".profile" />
+        <activity android:name=".sign_up"
+            android:label="@string/sign_up">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".profile" />
-        <activity android:name=".sign_up" />
         <activity android:name=".log_in" />
         <activity android:name=".choose_filter"
             android:label="@string/choose_filter">
