@@ -55,6 +55,9 @@
             android:name=".profile"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".choose_filter"
+            android:label="@string/choose_filter">
+        </activity>
     </application>
 
 </manifest>

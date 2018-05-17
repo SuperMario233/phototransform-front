@@ -6,4 +6,85 @@
     android:layout_height="match_parent"
     tools:context=".choose_filter">
 
+    <ImageView
+        android:id="@+id/photoShow"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/choose_filter_more_function"
+        app:srcCompat="@drawable/selfie_maniac" />
+
+    <HorizontalScrollView
+        android:id="@+id/filterScroll"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="#00000000"
+        app:layout_constraintBottom_toTopOf="@+id/choose_filter_more_function"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintVertical_chainStyle="packed">
+
+        <LinearLayout
+            android:id="@+id/linearScroll"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:orientation="horizontal"></LinearLayout>
+
+    </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/moreFilterBtn"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:background="#a0000000"
+        android:onClick="onClickMoreFilters"
+        android:text="更多滤镜"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@+id/choose_filter_more_function"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/filterScroll" />
+
+
+    <LinearLayout
+        android:id="@+id/choose_filter_more_function"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:gravity="bottom"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photoShow">
+
+        <Button
+            android:id="@+id/editBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickEdit"
+            android:text="编辑" />
+
+        <Button
+            android:id="@+id/customFilterBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickDIYFilter"
+            android:text="自定义滤镜" />
+
+        <Button
+            android:id="@+id/cropBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClickCrop"
+            android:text="选区" />
+    </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

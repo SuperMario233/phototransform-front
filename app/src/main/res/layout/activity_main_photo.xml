@@ -28,4 +28,5 @@
             android:layout_weight="1"
             android:text="相册" />
     </LinearLayout>
+
 </android.support.constraint.ConstraintLayout>

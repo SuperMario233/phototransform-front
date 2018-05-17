@@ -27,4 +27,8 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation files('libs/open_sdk_r5990_lite.jar')
+<<<<<<< HEAD
+=======
+    implementation 'com.android.volley:volley:1.1.0'
+>>>>>>> 4f3027f8864fabfe9c8ab7a1da4ef15df085716d
 }
