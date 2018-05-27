@@ -36,10 +36,6 @@
             android:name="com.tencent.connect.common.AssistActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name="com.tencent.connect.common.AssistActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity android:name=".main_photo">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -50,14 +46,10 @@
         <activity android:name=".sign_up" />
         <activity android:name=".log_in" />
         <activity android:name=".choose_filter" />
-        <activity android:name=".prepublish" />
         <activity
             android:name=".profile"
             android:label="@string/title_activity_profile"
             android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".choose_filter"
-            android:label="@string/choose_filter">
-        </activity>
     </application>
 
 </manifest>

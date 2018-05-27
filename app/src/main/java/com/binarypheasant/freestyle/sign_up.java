@@ -1,9 +1,5 @@
 package com.binarypheasant.freestyle;
 
-<<<<<<< HEAD
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-=======
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -24,7 +20,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
->>>>>>> 4f3027f8864fabfe9c8ab7a1da4ef15df085716d
 
 public class sign_up extends AppCompatActivity {
 
@@ -32,7 +27,6 @@ public class sign_up extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-    }
 
         // set up spinner
         Spinner spinner = (Spinner) findViewById(R.id.spinner_phoneRegion);

@@ -1,6 +1,5 @@
 package com.binarypheasant.freestyle;
 
-<<<<<<< HEAD
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -112,13 +111,6 @@ public class log_in extends AppCompatActivity {
 
     }
 
-=======
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
-public class log_in extends AppCompatActivity {
-
->>>>>>> 4f3027f8864fabfe9c8ab7a1da4ef15df085716d
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
