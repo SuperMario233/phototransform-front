@@ -51,17 +51,14 @@
             android:layout_height="400dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp" />
+            />
 
         <ImageView
             android:id="@+id/photo_show"
             android:layout_width="300dp"
             android:layout_height="400dp"
             android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="0dp"
+            android:layout_alignStart="@+id/camera_in"
             app:srcCompat="@android:color/background_light" />
 
     </RelativeLayout>
@@ -80,6 +77,7 @@
     </RelativeLayout>
 
     <Button
+        android:id="@+id/testbutton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Button" />

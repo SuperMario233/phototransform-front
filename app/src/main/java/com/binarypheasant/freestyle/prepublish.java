@@ -6,8 +6,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
+//import com.umeng.socialize.UMShareConfig;
+
 
 public class prepublish extends AppCompatActivity {
     private ImageView back;
@@ -28,9 +32,13 @@ public class prepublish extends AppCompatActivity {
         edit=(ImageView)findViewById(R.id.edit);
         save=(ImageView)findViewById(R.id.save);
         filterPub=(ImageView)findViewById(R.id.filter_pub);
+        //UMConfigure.init(this,"5a12384aa40fa3551f0001d1"
+        //        ,"umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
+
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.v("123","321");
                 if(isSaved) {
                     prepublish.this.finish();
                 }
@@ -49,6 +57,7 @@ public class prepublish extends AppCompatActivity {
                             prepublish.this.finish();
                         }
                     });
+                    querySave.show();
                     //ToDo:弹窗提示未保存，询问是否退出
                 }
             }
@@ -68,7 +77,10 @@ public class prepublish extends AppCompatActivity {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //ToDo 存储照片
+                isSaved=true;
+                AlertDialog.Builder savedInform=new AlertDialog.Builder(context);
+                savedInform.setMessage("已保存！");
+                savedInform.show();
             }
         });
         filterPub.setOnClickListener(new View.OnClickListener() {

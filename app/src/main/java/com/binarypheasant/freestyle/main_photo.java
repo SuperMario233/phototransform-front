@@ -30,8 +30,10 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
@@ -48,11 +50,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 public class main_photo extends AppCompatActivity {
@@ -72,11 +77,14 @@ public class main_photo extends AppCompatActivity {
     private Context context=this;
     private Button tempButton;
 
-    private static final int MY_PERMISSIONS_REQUEST_CALL_PHONE2=7;
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA=1;
+    private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE=7;
     private static final int REQUEST_CODE_PICK_IMAGE=3;
-    private static final int CROP_PHOTO = 2;
     private static final int RESULT_CODE_CAMERA=1;
     private static final int REQUEST_PHOTO_RESULT=4;
+    public final int TYPE_TAKE_PHOTO = 1;//Uri获取类型判断
+
+    public final int CODE_TAKE_PHOTO = 1;//相机RequestCode
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static
@@ -86,7 +94,7 @@ public class main_photo extends AppCompatActivity {
         ORIENTATIONS.append(Surface.ROTATION_180, 270);
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
-
+/*
     private TextureView.SurfaceTextureListener surfaceTextureListener=new TextureView.SurfaceTextureListener() {
         @Override
         public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int i, int i1) {
@@ -109,53 +117,66 @@ public class main_photo extends AppCompatActivity {
 
         }
     };
+    */
     protected void onCreate(Bundle savedInstanceState) {
+        Log.v("","create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_photo);
+
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
+
         sign=(ImageView) findViewById(R.id.sign_in);
         gallery=(ImageView)findViewById(R.id.gallery);
         takePhoto=(ImageView)findViewById(R.id.photo_button);
         cameraView=(TextureView)findViewById(R.id.camera_in);
         iv=(ImageView)findViewById(R.id.photo_show);
-        tempButton=(Button)findViewById(R.id.button);
-        /**
-         * ？？？为什么加了这个button就会报错？？？
-         */
-        /*
+        tempButton=(Button)findViewById(R.id.testbutton);
+
+
         tempButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent=new Intent(main_photo.this,prepublish.class);
                 startActivity(intent);
             }
-        });*/
+        });
+
         sign.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 Intent SignInt=new Intent(main_photo.this,LoginActivity.class);
                 startActivity(SignInt);
             }
+
                                 }
         );
+
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                takePicture();
+                Log.v("","click");
+                if(ContextCompat.checkSelfPermission(context,Manifest.permission.CAMERA)!=PackageManager.PERMISSION_GRANTED){
+                    ActivityCompat.requestPermissions(main_photo.this,new String[]{Manifest.permission.CAMERA},MY_PERMISSIONS_REQUEST_CAMERA);
+                }else{
+                    Log.v("","take picture");
+                    takePicture();
+                }
                 //ToDo:跳转页面，传输数据
             }
         });
         gallery.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View view) {
+                Log.v("","click");
                 if (ContextCompat.checkSelfPermission(context,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
                         != PackageManager.PERMISSION_GRANTED)
                 {
                     ActivityCompat.requestPermissions(main_photo.this,
                             new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            MY_PERMISSIONS_REQUEST_CALL_PHONE2);
+                            MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE);
 
                 }else {
                     choosePhoto();
@@ -163,7 +184,10 @@ public class main_photo extends AppCompatActivity {
             }
         });
     }
+
+    /*
     private void openCamera(){
+
         CameraManager manager=(CameraManager)getSystemService(Context.CAMERA_SERVICE);
         setCameraCharacteristics(manager);
         try{
@@ -240,10 +264,11 @@ public class main_photo extends AppCompatActivity {
             cameraDevice.close();
         }
     };
-
+*/
     /**
      * 开始预览
      */
+    /*
     private void takePreview(){
         SurfaceTexture mSurfaceTexture=cameraView.getSurfaceTexture();
         //设置TextureView的缓冲区大小
@@ -306,7 +331,9 @@ public class main_photo extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+    */
     /**监听拍照结果*/
+    /*
     private CameraCaptureSession.CaptureCallback captureCallback=new CameraCaptureSession.CaptureCallback() {
         @Override
         public void onCaptureCompleted(@NonNull CameraCaptureSession session, @NonNull CaptureRequest request, @NonNull TotalCaptureResult result) {
@@ -326,7 +353,9 @@ public class main_photo extends AppCompatActivity {
             super.onCaptureFailed(session,request,failure);
         }
     };
+    */
     /**监听拍照的图片*/
+    /*
     private ImageReader.OnImageAvailableListener imageAvailableListener=new ImageReader.OnImageAvailableListener() {
         // 当照片数据可用时激发该方法
         @Override
@@ -391,31 +420,67 @@ public class main_photo extends AppCompatActivity {
             cameraView.setSurfaceTextureListener(surfaceTextureListener);
         }
     }
-
+*/
     /**
      * 停止拍照释放资源
      */
+    /*
     private void stopCamera(){
         if(cameraDevice!=null){
             cameraDevice.close();
             cameraDevice=null;
         }
     }
+    */
 //拍照部分终于结束了！
+//拍照部分的简单实现（调用系统相机）
+    void takePicture(){
+        Log.v("take","in");
+        Intent takeIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri photoUri=getMediaFileUri(TYPE_TAKE_PHOTO);
+        Log.v("","putExtra");
+        takeIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
+        Log.v("","startAct");
+        startActivityForResult(takeIntent,CODE_TAKE_PHOTO);
+        return;
+    }
+
+    public Uri getMediaFileUri(int type){
+        Log.v("","getMedia");
+        File mediaStorageDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"相册名字");
+        if(!mediaStorageDir.exists()){
+            if(!mediaStorageDir.mkdir()){
+                return null;
+            }
+        }
+        String timeStamp= new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        Log.v("","mediaFile");
+        if(type==TYPE_TAKE_PHOTO){
+            mediaFile=new File(mediaStorageDir.getPath()+File.separator+"IMG_"+timeStamp+".jpg");
+        }else{
+            return null;
+        }
+        Log.v("","getUriForFile");
+        return FileProvider.getUriForFile(this,"com.binarypheasant.freestyle.fileprovider",mediaFile);
+    }
 
 
-
+//选择照片部分
     void choosePhoto() {
             Intent chooseInt=new Intent(Intent.ACTION_PICK);
             chooseInt.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
             startActivityForResult(chooseInt,REQUEST_CODE_PICK_IMAGE);
     }
+    @Override
     public void onActivityResult(int req,int res,Intent data) {
+        Log.v("","in");
         if(req==0)
             return;
         if(data==null)
             return;
         if(req==REQUEST_CODE_PICK_IMAGE){
+            Log.v("","pick");
             startPhotoZoom(data.getData());
         }
         if(req==REQUEST_PHOTO_RESULT){
@@ -427,11 +492,16 @@ public class main_photo extends AppCompatActivity {
                 iv.setImageBitmap(photo);
             }
         }
+        if(req==CODE_TAKE_PHOTO){
+            //todo
+        }
         super.onActivityResult(req,res,data);
     }
     public void startPhotoZoom(Uri uri){
         Intent zoomInt=new Intent("com.android.camera.action.CROP");
+        uri=convertUri(uri);
         zoomInt.setDataAndType(uri,"image/*");
+        Log.v("",uri.getPath());
         /**
         *运行时会报错，据说是路径问题，还没解决
          */
@@ -444,4 +514,25 @@ public class main_photo extends AppCompatActivity {
 
         startActivityForResult(zoomInt,REQUEST_PHOTO_RESULT);
     }
+    private Uri convertUri(Uri uri){
+        InputStream is;
+        try {
+            //Uri ----> InputStream
+            is = getContentResolver().openInputStream(uri);
+            //InputStream ----> Bitmap
+            Bitmap bm = BitmapFactory.decodeStream(is);
+            //关闭流
+            is.close();
+            //return saveBitmap(bm,"temp");
+            return uri;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 }
