@@ -41,6 +41,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -121,6 +122,8 @@ public class main_photo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         Log.v("","create");
         super.onCreate(savedInstanceState);
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main_photo);
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -245,6 +248,7 @@ public class main_photo extends AppCompatActivity {
         public int compare(Size lhs,Size rhs){
             return Long.signum((long) lhs.getWidth()*lhs.getHeight()-(long)rhs.getWidth()*rhs.getHeight());
         }
+
     }
     private CameraDevice.StateCallback stateCallback=new CameraDevice.StateCallback() {
         @Override
