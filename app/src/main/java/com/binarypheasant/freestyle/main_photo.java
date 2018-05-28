@@ -275,6 +275,9 @@ public class main_photo extends AppCompatActivity {
             Bundle extras=data.getExtras();
             Bitmap bmp=BitmapFactory.decodeFile(chooseFilePath);
             iv.setImageBitmap(bmp);
+            Intent filterIntent=new Intent(main_photo.this,choose_filter.class);
+            filterIntent.putExtra("imagePath",chooseFilePath);
+            startActivity(filterIntent);
             if(extras!=null){
                 Bitmap photo=extras.getParcelable("data");
                 ByteArrayOutputStream stream=new ByteArrayOutputStream();
@@ -289,6 +292,9 @@ public class main_photo extends AppCompatActivity {
             Bundle extras=data.getExtras();
             Bitmap bmp=BitmapFactory.decodeFile(filePath);
             iv.setImageBitmap(bmp);
+            Intent filterIntent=new Intent(main_photo.this,choose_filter.class);
+            filterIntent.putExtra("imagePath",filePath);
+            startActivity(filterIntent);
             /*
             if(extras!=null){
                 //Uri photo =extras.getParcelable("data");
