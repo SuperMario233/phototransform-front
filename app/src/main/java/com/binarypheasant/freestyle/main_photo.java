@@ -1,9 +1,11 @@
 package com.binarypheasant.freestyle;
 
 import android.Manifest;
+import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Camera;
@@ -26,7 +28,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.StrictMode;
+import android.provider.DocumentsContract;
 import android.provider.MediaStore;
+import android.provider.SyncStateContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -45,6 +49,8 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.tencent.connect.common.Constants;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -77,6 +83,9 @@ public class main_photo extends AppCompatActivity {
     private ImageView iv;
     private Context context=this;
     private Button tempButton;
+    private String filePath;
+    private String chooseFilePath;
+
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA=1;
     private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE=7;
@@ -133,7 +142,7 @@ public class main_photo extends AppCompatActivity {
         sign=(ImageView) findViewById(R.id.sign_in);
         gallery=(ImageView)findViewById(R.id.gallery);
         takePhoto=(ImageView)findViewById(R.id.photo_button);
-        cameraView=(TextureView)findViewById(R.id.camera_in);
+        //cameraView=(TextureView)findViewById(R.id.camera_in);
         iv=(ImageView)findViewById(R.id.photo_show);
         tempButton=(Button)findViewById(R.id.testbutton);
 
@@ -147,13 +156,12 @@ public class main_photo extends AppCompatActivity {
         });
 
         sign.setOnClickListener(new View.OnClickListener(){
+            @Override
             public void onClick(View v){
-                Intent SignInt=new Intent(main_photo.this,LoginActivity.class);
+                Intent SignInt=new Intent(main_photo.this,log_in.class);
                 startActivity(SignInt);
             }
-
-                                }
-        );
+        });
 
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -187,6 +195,200 @@ public class main_photo extends AppCompatActivity {
             }
         });
     }
+
+
+//拍照部分的简单实现（调用系统相机）
+
+    void takePicture(){
+        Log.v("take","in");
+        Intent takeIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        Uri photoUri=getMediaFileUri(TYPE_TAKE_PHOTO);
+        Log.v("","putExtra");
+        takeIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
+        Log.v("","startAct");
+        startActivityForResult(takeIntent,CODE_TAKE_PHOTO);
+        return;
+    }
+
+    public Uri getMediaFileUri(int type){
+        Log.v("","getMedia");
+        File mediaStorageDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"FreeStyle");
+        if(!mediaStorageDir.exists()){
+            if(!mediaStorageDir.mkdir()){
+                return null;
+            }
+        }
+        String timeStamp= new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        File mediaFile;
+        Log.v("","mediaFile");
+        if(type==TYPE_TAKE_PHOTO){
+            filePath=mediaStorageDir.getPath()+File.separator+"IMG_"+timeStamp+".jpg";
+            mediaFile=new File(filePath);
+        }else{
+            return null;
+        }
+        Log.v("","getUriForFile");
+        Uri mUri=FileProvider.getUriForFile(this,"com.binarypheasant.freestyle.fileprovider",mediaFile);
+        if(FileProvider.getUriForFile(this,"com.binarypheasant.freestyle.fileprovider",mediaFile)==null){
+            Log.v("","it's null!");
+        }
+        else{
+            Log.v("",mUri.getPath());
+        }
+        return mUri;
+    }
+
+
+//选择照片部分
+    void choosePhoto() {
+            File imagePath = new File(this.getFilesDir(), "images");
+            File newFile = new File(imagePath, "default_image.jpg");
+            Log.v("","before URI");
+            Log.v("",this.getFilesDir().getPath());
+            Log.v("",imagePath.getPath());
+            Log.v("",newFile.getPath());
+            //Uri contentUri = FileProvider.getUriForFile(this, "com.binarypheasant.freestyle.fileprovider", newFile);
+            Log.v("","before Intent");
+            Intent chooseInt=new Intent(Intent.ACTION_PICK);
+            chooseInt.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
+            //chooseInt.putExtra(MediaStore.EXTRA_OUTPUT,contentUri);
+            Log.v("","before activity");
+            startActivityForResult(chooseInt,REQUEST_CODE_PICK_IMAGE);
+    }
+    @Override
+    public void onActivityResult(int req,int res,Intent data) {
+        super.onActivityResult(req,res,data);
+        Log.v("","in");
+        if(req==0)
+            return;
+        if(data==null)
+            return;
+        if(req==REQUEST_CODE_PICK_IMAGE){
+            Log.v("","pick");
+            chooseFilePath=handleImageOnKitKat(data);
+            File uriFile=new File(chooseFilePath);
+            Uri uri=Uri.fromFile(uriFile);
+            startPhotoZoom(uri);
+        }
+        if(req==REQUEST_PHOTO_RESULT){
+            Log.v("","Zoom activity result");
+            Bundle extras=data.getExtras();
+            Bitmap bmp=BitmapFactory.decodeFile(chooseFilePath);
+            iv.setImageBitmap(bmp);
+            if(extras!=null){
+                Bitmap photo=extras.getParcelable("data");
+                ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                photo.compress(Bitmap.CompressFormat.JPEG,75,stream);// (0-100)压缩文件
+                iv.setImageBitmap(photo);
+            }else{
+                Log.v("","extra null");
+            }
+        }
+        if(req==CODE_TAKE_PHOTO){
+            Log.v("","Take photo result");
+            Bundle extras=data.getExtras();
+            Bitmap bmp=BitmapFactory.decodeFile(filePath);
+            iv.setImageBitmap(bmp);
+            /*
+            if(extras!=null){
+                //Uri photo =extras.getParcelable("data");
+                ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                Log.v("","path needed");
+            }
+            else{
+                Log.v("","Extra is null");
+            }
+            */
+        }
+
+    }
+    public void startPhotoZoom(Uri uri){
+        Log.v("","Zoom");
+        Intent zoomInt=new Intent("com.android.camera.action.CROP");
+        Log.v("","convertUri");
+        //uri=convertUri(uri);
+        Log.v("",uri.getPath());
+        Log.v("","finish convert");
+
+        zoomInt.setDataAndType(uri,"image/*");
+
+        /**
+        *运行时会报错，据说是路径问题，还没解决
+         */
+        zoomInt.putExtra("crop","true");
+        zoomInt.putExtra("aspectX",1);
+        zoomInt.putExtra("aspectY",1);
+        zoomInt.putExtra("outputX",300);
+        zoomInt.putExtra("outputY",400);
+        zoomInt.putExtra("return-data",true);
+        Log.v("","finish Zoom");
+        startActivityForResult(zoomInt,REQUEST_PHOTO_RESULT);
+    }
+    private Uri convertUri(Uri uri){
+        InputStream is;
+        try {
+            //Uri ----> InputStream
+            is = getContentResolver().openInputStream(uri);
+            //InputStream ----> Bitmap
+            Bitmap bm = BitmapFactory.decodeStream(is);
+            //关闭流
+            is.close();
+            //return saveBitmap(bm,"temp");
+            return uri;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
+    private String handleImageOnKitKat(Intent data){
+        String imagePath = null;
+        Uri uri = data.getData();
+
+        //判断该Uri是否是document封装过的
+        if(DocumentsContract.isDocumentUri(this,uri)){
+            //如果是document类型的Uri,则通过document id 处理
+            String docId = DocumentsContract.getDocumentId(uri);
+            if("com.android.providers.media.documents".equals(uri.getAuthority())){
+
+                String id = docId.split(":")[1];
+                String selection = MediaStore.Images.Media._ID + "=" +id;
+                imagePath = getImagePath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, selection);
+
+            }else if("com.android.providers.downloads.documents".equals(uri.getAuthority())){
+                //这个方法负责把id和contentUri连接成一个新的Uri
+                Uri contentUri = ContentUris.withAppendedId(Uri.parse("content://downloads/public_downloads"),
+                        Long.valueOf(docId));
+                imagePath = getImagePath(contentUri, null);
+            }
+        }else if ("content".equalsIgnoreCase(uri.getScheme())){
+            //如果是content类型的Uri,则使用普通方式处理
+            imagePath =getImagePath(uri,null);
+
+        }else if("file".equalsIgnoreCase(uri.getScheme())){
+            //如果是file类型的Uri,直接获取图片路径即可
+            imagePath = uri.getPath();
+        }
+        return imagePath;
+    }
+
+    private String getImagePath(Uri uri, String selection){
+        String path = null;
+
+        Cursor cursor = getContentResolver().query(uri,null,selection,null,null);
+        if(cursor != null){
+            if(cursor.moveToNext()){
+                path = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+            }
+            cursor.close();
+        }
+        return  path;
+    }
+
 
     /*
     private void openCamera(){
@@ -437,106 +639,5 @@ public class main_photo extends AppCompatActivity {
     }
     */
 //拍照部分终于结束了！
-//拍照部分的简单实现（调用系统相机）
-    void takePicture(){
-        Log.v("take","in");
-        Intent takeIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri photoUri=getMediaFileUri(TYPE_TAKE_PHOTO);
-        Log.v("","putExtra");
-        takeIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
-        Log.v("","startAct");
-        startActivityForResult(takeIntent,CODE_TAKE_PHOTO);
-        return;
-    }
-
-    public Uri getMediaFileUri(int type){
-        Log.v("","getMedia");
-        File mediaStorageDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"相册名字");
-        if(!mediaStorageDir.exists()){
-            if(!mediaStorageDir.mkdir()){
-                return null;
-            }
-        }
-        String timeStamp= new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        File mediaFile;
-        Log.v("","mediaFile");
-        if(type==TYPE_TAKE_PHOTO){
-            mediaFile=new File(mediaStorageDir.getPath()+File.separator+"IMG_"+timeStamp+".jpg");
-        }else{
-            return null;
-        }
-        Log.v("","getUriForFile");
-        return FileProvider.getUriForFile(this,"com.binarypheasant.freestyle.fileprovider",mediaFile);
-    }
-
-
-//选择照片部分
-    void choosePhoto() {
-            Intent chooseInt=new Intent(Intent.ACTION_PICK);
-            chooseInt.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,"image/*");
-            startActivityForResult(chooseInt,REQUEST_CODE_PICK_IMAGE);
-    }
-    @Override
-    public void onActivityResult(int req,int res,Intent data) {
-        Log.v("","in");
-        if(req==0)
-            return;
-        if(data==null)
-            return;
-        if(req==REQUEST_CODE_PICK_IMAGE){
-            Log.v("","pick");
-            startPhotoZoom(data.getData());
-        }
-        if(req==REQUEST_PHOTO_RESULT){
-            Bundle extras=data.getExtras();
-            if(extras!=null){
-                Bitmap photo=extras.getParcelable("data");
-                ByteArrayOutputStream stream=new ByteArrayOutputStream();
-                photo.compress(Bitmap.CompressFormat.JPEG,75,stream);// (0-100)压缩文件
-                iv.setImageBitmap(photo);
-            }
-        }
-        if(req==CODE_TAKE_PHOTO){
-            //todo
-        }
-        super.onActivityResult(req,res,data);
-    }
-    public void startPhotoZoom(Uri uri){
-        Intent zoomInt=new Intent("com.android.camera.action.CROP");
-        uri=convertUri(uri);
-        zoomInt.setDataAndType(uri,"image/*");
-        Log.v("",uri.getPath());
-        /**
-        *运行时会报错，据说是路径问题，还没解决
-         */
-        zoomInt.putExtra("crop","true");
-        zoomInt.putExtra("aspectX",1);
-        zoomInt.putExtra("aspectY",1);
-        zoomInt.putExtra("outputX",300);
-        zoomInt.putExtra("outputY",400);
-        zoomInt.putExtra("return-data",true);
-
-        startActivityForResult(zoomInt,REQUEST_PHOTO_RESULT);
-    }
-    private Uri convertUri(Uri uri){
-        InputStream is;
-        try {
-            //Uri ----> InputStream
-            is = getContentResolver().openInputStream(uri);
-            //InputStream ----> Bitmap
-            Bitmap bm = BitmapFactory.decodeStream(is);
-            //关闭流
-            is.close();
-            //return saveBitmap(bm,"temp");
-            return uri;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-    }
 
 }

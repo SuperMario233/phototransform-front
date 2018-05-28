@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 //import com.umeng.socialize.UMShareConfig;
-
+//applekey=
 
 public class prepublish extends AppCompatActivity {
     private ImageView back;

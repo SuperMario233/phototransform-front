@@ -52,7 +52,7 @@ public class sign_up extends AppCompatActivity {
         if (isPhoneNumber(phoneNumber.getText().toString())) {
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "/auth-code";
+            String url = "http://47.92.69.29/authCode";
 
             // Construct the json object
             String phoneNumberStr = phoneRegion.getSelectedItem().toString() + phoneNumber.getText().toString();
@@ -64,24 +64,27 @@ public class sign_up extends AppCompatActivity {
             }
 
             // Request a string response from the provided URL.
-            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, phoneJSON,
+            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, phoneJSON,
                     new Response.Listener<JSONObject>() {
                         @Override
                         public void onResponse(JSONObject response) {
                             // 需要判断返回码
                             //// parse the response
+                            //ret = response.getString();
                             Toast.makeText(sign_up.this, "验证码已发送", Toast.LENGTH_LONG).show();
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Toast.makeText(sign_up.this, "网络错误", Toast.LENGTH_LONG).show();
+                    error.printStackTrace();
                 }
             }
             );
 
             // Add the request to the RequestQueue.
             queue.add(jsonRequest);
+            //return ret;
         }
         else {
             phoneNumber.setError("请输入合法的手机号。");
@@ -104,7 +107,7 @@ public class sign_up extends AppCompatActivity {
 
             // Instantiate the RequestQueue.
             RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "/sign-up";
+            String url = "http://47.92.69.29/sign-up";
 
             // Request a string response from the provided URL.
             JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, userInfo,

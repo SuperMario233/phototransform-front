@@ -45,20 +45,12 @@
         android:layout_width="match_parent"
         android:layout_height="400dp">
 
-        <TextureView
-            android:id="@+id/camera_in"
-            android:layout_width="300dp"
-            android:layout_height="400dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            />
-
         <ImageView
             android:id="@+id/photo_show"
             android:layout_width="300dp"
             android:layout_height="400dp"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/camera_in"
+            android:layout_centerHorizontal="true"
             app:srcCompat="@android:color/background_light" />
 
     </RelativeLayout>
