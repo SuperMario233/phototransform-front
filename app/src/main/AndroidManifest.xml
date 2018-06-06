@@ -59,10 +59,11 @@
         </provider>
 
         <activity android:name=".sign_up" />
-        <activity android:name=".log_in"
+        <activity
+            android:name=".log_in"
             android:label="login"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".choose_filter"></activity>
+        <activity android:name=".choose_filter" />
         <activity
             android:name=".profile"
             android:label="@string/title_activity_profile"
@@ -75,12 +76,9 @@
             android:name=".filterlist"
             android:label="@string/title_activity_filterlist"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
+        <activity android:name=".editprofile"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

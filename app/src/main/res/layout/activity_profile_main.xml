@@ -47,11 +47,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="83dp"
+        android:id="@+id/nickname"
+        android:layout_width="183dp"
         android:layout_height="25dp"
-        android:layout_marginStart="118dp"
-        android:layout_marginTop="104dp"
-        android:gravity="center"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="74dp"
+        android:gravity="left"
         android:left="118dp"
         android:text="用户昵称"
         android:textSize="16sp"
@@ -61,6 +62,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/edit"
         android:layout_width="108dp"
         android:layout_height="25dp"
         android:layout_marginStart="118dp"
