@@ -93,7 +93,7 @@ public class log_in extends AppCompatActivity {
                     Log.v("UserInfo","onCancel");
                 }
             });*/
-                Intent GotoProfile = new Intent(log_in.this, profile.class);
+                Intent GotoProfile = new Intent(log_in.this, profile_main.class);
                 //add info
                 startActivity(GotoProfile);
         }
