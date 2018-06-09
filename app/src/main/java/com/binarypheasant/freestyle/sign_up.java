@@ -1,5 +1,6 @@
 package com.binarypheasant.freestyle;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -45,51 +46,10 @@ public class sign_up extends AppCompatActivity {
         });
     }
 
-    public void getAuthCode(View view) {
-        // First check the phone number
-        EditText phoneNumber = (EditText) findViewById(R.id.getPhoneNumber);
-        Spinner phoneRegion = (Spinner) findViewById(R.id.spinner_phoneRegion);
-        if (isPhoneNumber(phoneNumber.getText().toString())) {
-            // Instantiate the RequestQueue.
-            RequestQueue queue = Volley.newRequestQueue(this);
-            String url = "http://47.92.69.29/authCode";
-
-            // Construct the json object
-            String phoneNumberStr = phoneRegion.getSelectedItem().toString() + phoneNumber.getText().toString();
-            JSONObject phoneJSON = new JSONObject();
-            try {
-                phoneJSON.put("mobile", phoneNumberStr);
-            } catch (JSONException e){
-                e.printStackTrace();
-            }
-
-            // Request a string response from the provided URL.
-            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, phoneJSON,
-                    new Response.Listener<JSONObject>() {
-                        @Override
-                        public void onResponse(JSONObject response) {
-                            // 需要判断返回码
-                            //// parse the response
-                            //ret = response.getString();
-                            Toast.makeText(sign_up.this, "验证码已发送", Toast.LENGTH_LONG).show();
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(sign_up.this, "网络错误", Toast.LENGTH_LONG).show();
-                    error.printStackTrace();
-                }
-            }
-            );
-
-            // Add the request to the RequestQueue.
-            queue.add(jsonRequest);
-            //return ret;
-        }
-        else {
-            phoneNumber.setError("请输入合法的手机号。");
-        }
-
+    public void login(View view) {
+        // 调到登录页面
+        Intent loginIntent = new Intent(sign_up.this, log_in.class);
+        startActivity(loginIntent);
     }
 
     public void createUser(View view) {
@@ -115,6 +75,7 @@ public class sign_up extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             // 需要判断返回码
+
                             //// parse the response
                             Toast.makeText(sign_up.this, "注册成功", Toast.LENGTH_SHORT).show();
                         }
@@ -140,14 +101,14 @@ public class sign_up extends AppCompatActivity {
         final EditText password = (EditText) findViewById(R.id.getPassword);
         final EditText confirmPassword = (EditText) findViewById(R.id.repeatPassword);
         final EditText phoneNumber = (EditText) findViewById(R.id.getPhoneNumber);
-        final Spinner phoneRegion = (Spinner) findViewById(R.id.spinner_phoneRegion);
-        final EditText veriCode = (EditText) findViewById(R.id.getVeriCode);
+//        final Spinner phoneRegion = (Spinner) findViewById(R.id.spinner_phoneRegion);
+//        final EditText veriCode = (EditText) findViewById(R.id.getVeriCode);
 
         String emailStr = email.getText().toString();
         String passwordStr = password.getText().toString();
         String confirmPasswordStr = confirmPassword.getText().toString();
-        String phoneNumberStr = phoneRegion.getSelectedItem().toString() + phoneNumber.getText().toString();
-        String veriCodeStr = veriCode.getText().toString();
+        String phoneNumberStr = phoneNumber.getText().toString();
+//        String veriCodeStr = veriCode.getText().toString();
 
         // Check the inputs
         if (!isEmail(emailStr)) {
@@ -162,18 +123,25 @@ public class sign_up extends AppCompatActivity {
             confirmPassword.setError("两次输入密码不一致。");
             return null;
         }
-        if (isEmpty(veriCodeStr)) {
-            veriCode.setError("验证码不能为空！");
-            return null;
-        }
+//        if (isEmpty(veriCodeStr)) {
+//            veriCode.setError("验证码不能为空！");
+//            return null;
+//        }
 
         // Construct the json obkect
         JSONObject userInfo = new JSONObject();
         try {
-            userInfo.put("account", emailStr);
-            userInfo.put("password", Encrypt.encrypt(passwordStr)); // password encrypted
+//            userInfo.put("account", emailStr);
+//            userInfo.put("password", Encrypt.encrypt(passwordStr)); // password encrypted
+//            userInfo.put("mobile", phoneNumberStr);
+//            userInfo.put("authCode", veriCodeStr);
+            userInfo.put("userName", emailStr);
+            userInfo.put("pwd", passwordStr);
+            userInfo.put("nickName", "null");
+            userInfo.put("sex", "male");
             userInfo.put("mobile", phoneNumberStr);
-            userInfo.put("authCode", veriCodeStr);
+            userInfo.put("birthday", "null");
+            userInfo.put("portrait", "null");
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -202,5 +170,53 @@ public class sign_up extends AppCompatActivity {
         else
             return phoneNumber.matches(phoneRegex);
     }
+
+    // 获取验证码，已经放弃
+    //    public void getAuthCode(View view) {
+//        // First check the phone number
+//        EditText phoneNumber = (EditText) findViewById(R.id.getPhoneNumber);
+//        Spinner phoneRegion = (Spinner) findViewById(R.id.spinner_phoneRegion);
+//        if (isPhoneNumber(phoneNumber.getText().toString())) {
+//            // Instantiate the RequestQueue.
+//            RequestQueue queue = Volley.newRequestQueue(this);
+//            String url = "http://47.92.69.29/authCode";
+//
+//            // Construct the json object
+//            String phoneNumberStr = phoneRegion.getSelectedItem().toString() + phoneNumber.getText().toString();
+//            JSONObject phoneJSON = new JSONObject();
+//            try {
+//                phoneJSON.put("mobile", phoneNumberStr);
+//            } catch (JSONException e){
+//                e.printStackTrace();
+//            }
+//
+//            // Request a string response from the provided URL.
+//            JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.GET, url, phoneJSON,
+//                    new Response.Listener<JSONObject>() {
+//                        @Override
+//                        public void onResponse(JSONObject response) {
+//                            // 需要判断返回码
+//                            //// parse the response
+//                            //ret = response.getString();
+//                            Toast.makeText(sign_up.this, "验证码已发送", Toast.LENGTH_LONG).show();
+//                        }
+//                    }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    Toast.makeText(sign_up.this, "网络错误", Toast.LENGTH_LONG).show();
+//                    error.printStackTrace();
+//                }
+//            }
+//            );
+//
+//            // Add the request to the RequestQueue.
+//            queue.add(jsonRequest);
+//            //return ret;
+//        }
+//        else {
+//            phoneNumber.setError("请输入合法的手机号。");
+//        }
+//
+//    }
 
 }

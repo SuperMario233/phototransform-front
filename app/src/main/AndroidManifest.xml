@@ -58,12 +58,18 @@
                 android:resource="@xml/provider_path" />
         </provider>
 
-        <activity android:name=".sign_up" />
+
         <activity
             android:name=".log_in"
             android:label="login"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".choose_filter" />
+
+        <activity android:name=".sign_up"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".choose_filter">
+
+        </activity>
+
         <activity
             android:name=".profile"
             android:label="@string/title_activity_profile"

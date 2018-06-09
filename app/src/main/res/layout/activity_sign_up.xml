@@ -6,16 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".sign_up">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:fontFamily="monospace"
-        android:text="Freestyle"
-        android:textAllCaps="false"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="32sp"
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="310dp"
+        android:layout_height="145dp"
+        android:layout_marginEnd="45dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="50dp"
+        android:contentDescription="FreeStyleLogo"
+        android:left="50dp"
+        android:src="@drawable/freestyle_logo"
+        android:top="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,119 +25,123 @@
         android:id="@+id/getEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:ems="10"
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="210dp"
         android:hint="账号/邮箱"
         android:inputType="textEmailAddress"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-    <EditText
-        android:id="@+id/repeatPassword"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="再次输入密码"
-        android:inputType="textPassword"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getPassword" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/getPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="270dp"
         android:hint="密码"
         android:inputType="textPassword"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getEmail" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/repeatPassword"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="330dp"
+        android:hint="再次输入密码"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/getPhoneNumber"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
+        android:layout_marginEnd="35dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="390dp"
         android:hint="手机号码"
         android:inputType="phone"
-        android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/spinner_phoneRegion"
-        app:layout_constraintTop_toBottomOf="@+id/repeatPassword" />
-
-    <Spinner
-        android:id="@+id/spinner_phoneRegion"
-        android:entries="@array/phone_region"
-        android:layout_width="wrap_content"
-        android:layout_height="39dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/getVeriCode"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/repeatPassword" />
+        app:layout_constraintTop_toTopOf="parent"  />
 
-    <EditText
-        android:id="@+id/getVeriCode"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="验证码"
-        android:inputType="number"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toStartOf="@+id/sendVeriCodeBtn"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getPhoneNumber" />
+    <!--<Spinner-->
+    <!--android:id="@+id/spinner_phoneRegion"-->
+    <!--android:entries="@array/phone_region"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="39dp"-->
+    <!--android:layout_marginBottom="8dp"-->
+    <!--android:layout_marginStart="16dp"-->
+    <!--android:layout_marginTop="8dp"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/getVeriCode"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toBottomOf="@+id/repeatPassword" />-->
 
-    <Button
-        android:id="@+id/sendVeriCodeBtn"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:onClick="getAuthCode"
-        android:text="获取验证码"
-        app:layout_constraintBaseline_toBaselineOf="@+id/getVeriCode"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <!--<EditText-->
+    <!--android:id="@+id/getVeriCode"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="35dp"-->
+    <!--android:layout_marginTop="450dp"-->
+    <!--android:ems="10"-->
+    <!--android:hint="验证码"-->
+    <!--android:inputType="number"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
+
+    <!--<Button-->
+    <!--android:id="@+id/sendVeriCodeBtn"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginStart="210dp"-->
+    <!--android:layout_marginTop="390dp"-->
+    <!--android:onClick="getAuthCode"-->
+    <!--android:text="获取验证码"-->
+    <!--app:layout_constraintStart_toStartOf="parent"-->
+    <!--app:layout_constraintTop_toTopOf="parent" />-->
+
 
     <Button
         android:id="@+id/signupBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="450dp"
         android:onClick="createUser"
-        android:text="注册并进入Freestyle"
+        android:text="注册"
         android:textAllCaps="false"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/getVeriCode" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/agreementCheckbox"
+    <Button
+        android:id="@+id/loginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text='我已阅读且同意"用户协议"和"隐私条款"'
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="35dp"
+        android:layout_marginTop="450dp"
+        android:onClick="login"
+        android:text="登录"
+        android:textAllCaps="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-        
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <!--<CheckBox-->
+    <!--android:id="@+id/agreementCheckbox"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginBottom="16dp"-->
+    <!--android:text='我已阅读且同意"用户协议"和"隐私条款"'-->
+    <!--app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintStart_toStartOf="parent" />-->
+
 </android.support.constraint.ConstraintLayout>
