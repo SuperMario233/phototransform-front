@@ -10,12 +10,14 @@
         android:id="@+id/usericon"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_marginEnd="130dp"
         android:layout_marginStart="130dp"
         android:layout_marginTop="90dp"
         android:gravity="center"
         android:left="130dp"
-        android:top="90dp"
         android:src="@drawable/ic_menu_gallery"
+        android:top="90dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,7 +25,7 @@
         android:id="@+id/edit_icon"
         android:layout_width="25dp"
         android:layout_height="25dp"
-        android:layout_marginStart="200dp"
+        android:layout_marginStart="220dp"
         android:layout_marginTop="166dp"
         android:left="200dp"
         android:src="@drawable/camera"
@@ -66,17 +68,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="74dp"
-        android:layout_marginTop="410dp"
-        android:left="54dp"
-        android:src="@drawable/icons8_userdes"
-        android:top="410dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <RadioGroup
         android:id="@+id/sexGroup"
         android:layout_width="wrap_content"
@@ -101,18 +92,6 @@
             android:layout_weight="1"
             android:text="       女       " />
     </RadioGroup>
-
-    <EditText
-        android:id="@+id/userdes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="107dp"
-        android:layout_marginTop="410dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/submit"

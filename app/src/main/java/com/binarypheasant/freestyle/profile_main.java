@@ -1,28 +1,115 @@
 package com.binarypheasant.freestyle;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class profile_main extends AppCompatActivity {
 
-    public String nickname;
-    public String des,historyString,favoriteString;
+    public String nickname,content,statusCode;
+    public String historyString,favoriteString;
+    public Bitmap Photo;
+    public String userName;
     public boolean sex;
     public int historyNum,favoriteNum;
+    public int[] favorite_item,history_item;
+
+    private int GetID(String str,int[] list){
+        int count = 0,length = str.length(),i,num;
+
+        for(i=0;i<length;++i){
+            num = 0;
+            while(str.charAt(i) !='\t'){
+                num = num*10 + str.charAt(i)-'0';
+                ++i;
+            }
+            list[count++] = num;
+        }
+        return count;
+    }
 
     private void GetUserInfo(){
-        nickname = "BinaryPheasant";
-        des = "Hello World!";
-        sex = true;
-        historyNum = 2;
-        favoriteNum = 5;
-        historyString = historyNum + "\n使用历史";
-        favoriteString = favoriteNum + "\n我的收藏";
+        favorite_item = new int[200];
+        history_item = new int[200];
+        content = null;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://47.92.69.29:8000/get-userinfo";
+        JSONObject infoJSON = new JSONObject();
+        try {
+            infoJSON.put("sessionKey", log_in.sessionKey);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, infoJSON,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // 需要判断返回码
+                        //// parse the response
+                        try{
+                            statusCode = response.getString("statusCode");
+                            nickname = response.getString("nickName");
+                            content = response.getString("portrait");
+                            sex = response.getString("sex") == "M";
+                            historyString = response.getString("history");
+                            favoriteString = response.getString("favorite");
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                        if (statusCode.equals("401")) return;//Toast.makeText(profile_main.this, "用户不存在", Toast.LENGTH_LONG).show();
+                        else if(statusCode.equals("200")){
+                            //Toast.makeText(profile_main.this, "用户信息获取成功", Toast.LENGTH_LONG).show();
+                            TextView nicknameView = findViewById(R.id.nickname);
+                            TextView myfavorite = findViewById(R.id.myfavorite);
+                            TextView myhistory = findViewById(R.id.myhistory);
+                            nicknameView.setText(nickname);//设置昵称
+                            historyNum = GetID(historyString,history_item);
+                            favoriteNum = GetID(favoriteString,favorite_item);
+                            historyString = historyNum + "\n使用历史";
+                            favoriteString = favoriteNum + "\n我的收藏";
+                            myhistory.setText(historyString);//设置历史记录
+                            myfavorite.setText(favoriteString);//设置我的收藏
+                            /*
+                            if(content != null) {//显示头像
+                                byte[] bitmapArray;
+                                bitmapArray= Base64.decode(content, Base64.DEFAULT);
+                                Photo = BitmapFactory.decodeByteArray(bitmapArray, 0, bitmapArray.length);
+                                // display in the imageView
+                                ImageView imageView = (ImageView) findViewById(R.id.usericon);
+                                imageView.setImageBitmap(Photo);
+                            }*/
+                        }
+                        else Toast.makeText(profile_main.this, "错误码："+statusCode, Toast.LENGTH_LONG).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(profile_main.this, "Error "+error, Toast.LENGTH_LONG).show();
+                error.printStackTrace();
+            }
+        }
+        );
+
+        // Add the request to the RequestQueue.
+        queue.add(jsonRequest);
     }
 
     @Override
@@ -30,14 +117,10 @@ public class profile_main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_main);
 
-        GetUserInfo();
+        GetUserInfo();//获取用户信息
 
-        TextView nicknameView = findViewById(R.id.nickname);
         TextView myfavorite = findViewById(R.id.myfavorite);
         TextView myhistory = findViewById(R.id.myhistory);
-        nicknameView.setText(nickname);
-        myhistory.setText(historyString);
-        myfavorite.setText(favoriteString);
 
         ImageView filterView = (ImageView) findViewById(R.id.filter);
         filterView.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +143,7 @@ public class profile_main extends AppCompatActivity {
         ImageView loginView = (ImageView) findViewById(R.id.login);
         loginView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //退出当前用户申请
+                logout();
                 Intent Gotolog_in = new Intent(profile_main.this, log_in.class);
                 startActivity(Gotolog_in);
             }
@@ -68,7 +151,7 @@ public class profile_main extends AppCompatActivity {
         ImageView logoutView = (ImageView) findViewById(R.id.logout);
         logoutView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //退出当前用户申请
+                logout();
                 Intent Gotomain_photo = new Intent(profile_main.this, main_photo.class);
                 startActivity(Gotomain_photo);
             }
@@ -76,7 +159,6 @@ public class profile_main extends AppCompatActivity {
 
         myfavorite.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //退出当前用户申请
                 Intent Gotofilterlist = new Intent(profile_main.this, filterlist.class);
                 Gotofilterlist.putExtra("choose",2);
                 startActivity(Gotofilterlist);
@@ -85,7 +167,6 @@ public class profile_main extends AppCompatActivity {
 
         myhistory.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                //退出当前用户申请
                 Intent Gotofilterlist = new Intent(profile_main.this, filterlist.class);
                 Gotofilterlist.putExtra("choose",1);
                 startActivity(Gotofilterlist);
@@ -107,9 +188,37 @@ public class profile_main extends AppCompatActivity {
                 Intent GotoEdit = new Intent(profile_main.this, editprofile.class);
                 GotoEdit.putExtra("nickname",nickname);
                 GotoEdit.putExtra("sex",sex);
-                GotoEdit.putExtra("des",des);
                 startActivity(GotoEdit);
             }
         });
+    }
+    private void logout(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://47.92.69.29:8000/log-out";
+        //String renderURL = "http://47.92.69.29/render";
+        JSONObject sign_inJSON = new JSONObject();
+        try {
+            sign_inJSON.put("sessionKey", log_in.sessionKey);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        log_in.sessionKey = "";
+
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, sign_inJSON,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Toast.makeText(profile_main.this, "退出登录", Toast.LENGTH_LONG).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(profile_main.this, "Error "+error, Toast.LENGTH_LONG).show();
+                error.printStackTrace();
+            }
+        }
+        );
+        queue.add(jsonRequest);
     }
 }

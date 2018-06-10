@@ -3,6 +3,7 @@ package com.binarypheasant.freestyle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +29,8 @@ public class log_in extends AppCompatActivity {
 
     // UI references.
     private Tencent mTencent;
-    public String sessionKey,statusCode;
+    static String sessionKey;
+    public String statusCode;
     private boolean SendRet;
 
     @Override
@@ -63,11 +65,6 @@ public class log_in extends AppCompatActivity {
                 e.printStackTrace();
             }
            boolean result = SendToSever(openidString,"");
-           if (true){
-                Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
-                Intent GotoProfile = new Intent(log_in.this, profile_main.class);
-                startActivity(GotoProfile);
-           }
         }
 
         @Override
@@ -101,17 +98,27 @@ public class log_in extends AppCompatActivity {
                 EditText user_passwordText = findViewById(R.id.passwordText);
                 String user_email = user_emailText.getText().toString();
                 String user_password = user_passwordText.getText().toString();
+                if(TextUtils.isEmpty(user_email)){
+                    user_emailText.setError("用户名不能为空");
+                    return;
+                }
+                if(TextUtils.isEmpty(user_password)){
+                    user_passwordText.setError("密码不能为空");
+                    return;
+                }
                 boolean result = SendToSever(user_email,user_password);
                 //send email and password to somewhere
-                if (result) startActivity(GotoProfile);
+                //if (result) startActivity(GotoProfile);
             }
         });
         Button logupButton = (Button) findViewById(R.id.logupButton);
         logupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*
                 Intent GotoSignUp = new Intent(log_in.this, sign_up.class);
-                startActivity(GotoSignUp);
+                startActivity(GotoSignUp);*/
+                MySignUp();
             }
         });
 
@@ -125,11 +132,13 @@ public class log_in extends AppCompatActivity {
 
     public boolean SendToSever(String email,String password){
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://47.92.69.29/sign-in";
+        String url = "http://47.92.69.29:8000/sign-in";
+        //String renderURL = "http://47.92.69.29/render";
         JSONObject sign_inJSON = new JSONObject();
         try {
             sign_inJSON.put("userName", email);
-            sign_inJSON.put("pwd", password);
+            if(password.equals("")) sign_inJSON.put("pwd", password);
+            else sign_inJSON.put("pwd", Encrypt.encrypt(password));
         } catch (JSONException e){
             e.printStackTrace();
         }
@@ -147,25 +156,81 @@ public class log_in extends AppCompatActivity {
                         }catch (JSONException e){
                             e.printStackTrace();
                         }
+                        //Toast.makeText(log_in.this, "statusCode:"+statusCode, Toast.LENGTH_LONG).show();
+                        //SendRet = false;
+
                         if(statusCode.equals("401")){
                             Toast.makeText(log_in.this, "账号或密码错误", Toast.LENGTH_LONG).show();
                             SendRet = false;
                         }
-                        else SendRet = true;
+                        else if (statusCode.equals("200")){
+                            Toast.makeText(log_in.this, "登录成功", Toast.LENGTH_LONG).show();
+                            Intent GotoProfile = new Intent(log_in.this, profile_main.class);
+                            startActivity(GotoProfile);
+                            SendRet = true;
+                        }
+                        else{
+                            Toast.makeText(log_in.this, "其他错误：返回值"+statusCode, Toast.LENGTH_LONG).show();
+                            SendRet = false;
+                        }/**/
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(log_in.this, "网络错误", Toast.LENGTH_LONG).show();
+                Toast.makeText(log_in.this, "Error "+error, Toast.LENGTH_LONG).show();
                 error.printStackTrace();
                 SendRet = false;
-            }
+                }
         }
         );
 
         // Add the request to the RequestQueue.
         queue.add(jsonRequest);
         return SendRet;
+    }
+
+    public void MySignUp(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://47.92.69.29:8000/sign-up";
+        //String renderURL = "http://47.92.69.29/render";
+        JSONObject sign_inJSON = new JSONObject();
+        try {
+            sign_inJSON.put("userName", "mario");
+            sign_inJSON.put("pwd", Encrypt.encrypt("123456"));
+            sign_inJSON.put("nickName","Mario");
+            sign_inJSON.put("sex","M");
+            sign_inJSON.put("mobile","18101276635");
+            sign_inJSON.put("birthday","1997-03-20");
+            sign_inJSON.put("portrait","");
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, sign_inJSON,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // 需要判断返回码
+                        //// parse the response
+                        try{
+                            statusCode = response.getString("statusCode");
+                            sessionKey = response.getString("sessionKey");
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(log_in.this, "statusCode:"+statusCode, Toast.LENGTH_LONG).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(log_in.this, "Error "+error, Toast.LENGTH_LONG).show();
+                error.printStackTrace();
+                SendRet = false;
+            }
+        }
+        );
+        queue.add(jsonRequest);
     }
 
 }
