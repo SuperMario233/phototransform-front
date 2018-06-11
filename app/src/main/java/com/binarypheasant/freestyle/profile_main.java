@@ -29,6 +29,7 @@ public class profile_main extends AppCompatActivity {
     public boolean sex;
     public int historyNum,favoriteNum;
     public int[] favorite_item,history_item;
+    private String hotString,filter_name,filter_description,filter_url;
 
     private int GetID(String str,int[] list){
         int count = 0,length = str.length(),i,num;
@@ -112,6 +113,49 @@ public class profile_main extends AppCompatActivity {
         queue.add(jsonRequest);
     }
 
+    private void GetHotest(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://47.92.69.29:7999/get-hotest";
+        //String renderURL = "http://47.92.69.29/render";
+        JSONObject sign_inJSON = new JSONObject();
+        try {
+            sign_inJSON.put("filterID","1");
+            sign_inJSON.put("sessionKey",log_in.sessionKey);
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, sign_inJSON,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // 需要判断返回码
+                        //// parse the response
+                        try{
+                            statusCode = response.getString("statusCode");
+                            hotString = response.getString("hotest");
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(profile_main.this, "name:"+filter_name, Toast.LENGTH_LONG).show();
+                        AlertDialog.Builder builder= new AlertDialog.Builder(profile_main.this);
+                        builder.setTitle("最热列表");
+                        builder.setMessage(hotString);
+                        builder.setIcon(R.drawable.freestyle_icon);
+                        builder.show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(profile_main.this, "Error "+error, Toast.LENGTH_LONG).show();
+                error.printStackTrace();
+            }
+        }
+        );
+        queue.add(jsonRequest);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,9 +169,12 @@ public class profile_main extends AppCompatActivity {
         ImageView filterView = (ImageView) findViewById(R.id.filter);
         filterView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent Gotofilterlist = new Intent(profile_main.this, filterlist.class);
+
+                Intent Gotofilterlist = new Intent(profile_main.this, FilterGallery.class);
                 Gotofilterlist.putExtra("choose",0);
                 startActivity(Gotofilterlist);
+                /*
+                GetHotest();*/
             }
         });
         ImageView aboutView = (ImageView) findViewById(R.id.about);
@@ -159,7 +206,7 @@ public class profile_main extends AppCompatActivity {
 
         myfavorite.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent Gotofilterlist = new Intent(profile_main.this, filterlist.class);
+                Intent Gotofilterlist = new Intent(profile_main.this, FilterGallery.class);
                 Gotofilterlist.putExtra("choose",2);
                 startActivity(Gotofilterlist);
             }
@@ -167,7 +214,7 @@ public class profile_main extends AppCompatActivity {
 
         myhistory.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                Intent Gotofilterlist = new Intent(profile_main.this, filterlist.class);
+                Intent Gotofilterlist = new Intent(profile_main.this, FilterGallery.class);
                 Gotofilterlist.putExtra("choose",1);
                 startActivity(Gotofilterlist);
             }

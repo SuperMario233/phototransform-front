@@ -53,6 +53,8 @@ public class filterlist extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
         mViewPager.setCurrentItem(choose);
+
+
     }
 
 

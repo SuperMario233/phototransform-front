@@ -115,10 +115,9 @@ public class log_in extends AppCompatActivity {
         logupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*
                 Intent GotoSignUp = new Intent(log_in.this, sign_up.class);
-                startActivity(GotoSignUp);*/
-                MySignUp();
+                startActivity(GotoSignUp);
+                /*MySignUp();*/
             }
         });
 
@@ -178,6 +177,8 @@ public class log_in extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(log_in.this, "Error "+error, Toast.LENGTH_LONG).show();
+                Intent GotoProfile = new Intent(log_in.this, profile_main.class);
+                startActivity(GotoProfile);
                 error.printStackTrace();
                 SendRet = false;
                 }

@@ -75,10 +75,12 @@
         <activity
             android:name=".filterlist"
             android:label="@string/title_activity_filterlist"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <activity android:name=".editprofile"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".editprofile"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".FilterGallery"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
