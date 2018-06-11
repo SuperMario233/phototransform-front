@@ -262,7 +262,6 @@ public class choose_filter extends AppCompatActivity {
         }
     }
 
-
     private String saveImgToFile(Bitmap bitmap){
 
         File mediaStorageDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"FreeStyle");
@@ -300,6 +299,7 @@ public class choose_filter extends AppCompatActivity {
 
         return filePath;
     }
+
 
     public void onClickMoreFilters(View view) {
         Toast.makeText(choose_filter.this, "你点击了\"更多滤镜\"", Toast.LENGTH_SHORT).show();
@@ -359,4 +359,6 @@ public class choose_filter extends AppCompatActivity {
 //        Toast.makeText(choose_filter.this, "你点击了\"选区\"", Toast.LENGTH_SHORT).show();
 //    }
 
+
 }
+
