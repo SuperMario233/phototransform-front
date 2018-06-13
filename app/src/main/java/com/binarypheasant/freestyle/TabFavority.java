@@ -24,9 +24,5 @@ public class TabFavority extends Fragment {
         return rootView;
     }
     private void initFavority(){
-        Filter light = new Filter("Light",R.drawable.icons8_filter);
-        filterList.add(light);
-        Filter dark = new Filter("Dark",R.drawable.icons8_filter);
-        filterList.add(dark);
     }
 }

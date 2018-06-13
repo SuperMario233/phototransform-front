@@ -58,7 +58,6 @@ public class editprofile extends AppCompatActivity {
     public void SendToSever(String nickname,String sex){
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://47.92.69.29:8000/modify-user";
-        //String renderURL = "http://47.92.69.29/render";
         JSONObject sign_inJSON = new JSONObject();
         try {
             sign_inJSON.put("nickName", nickname);

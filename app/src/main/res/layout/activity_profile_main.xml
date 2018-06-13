@@ -162,6 +162,19 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
+        android:id="@+id/camera"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="490dp"
+        android:left="72dp"
+        android:src="@drawable/freestyle_icon"
+        android:top="312dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_behind"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
         android:id="@+id/login"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -203,14 +216,29 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_about"
+    android:id="@+id/text_about"
+    android:layout_width="57dp"
+    android:layout_height="23dp"
+    android:layout_marginStart="64dp"
+    android:layout_marginTop="557dp"
+    android:gravity="center"
+    android:left="64dp"
+    android:text="关于我们"
+    android:textSize="14sp"
+    android:top="359dp"
+    app:layout_constraintBottom_toTopOf="@+id/view_behind"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_camera"
         android:layout_width="57dp"
         android:layout_height="23dp"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="153dp"
         android:layout_marginTop="557dp"
         android:gravity="center"
         android:left="64dp"
-        android:text="关于我们"
+        android:text="主界面"
         android:textSize="14sp"
         android:top="359dp"
         app:layout_constraintBottom_toTopOf="@+id/view_behind"

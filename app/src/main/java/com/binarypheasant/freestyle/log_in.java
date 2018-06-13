@@ -132,7 +132,6 @@ public class log_in extends AppCompatActivity {
     public boolean SendToSever(String email,String password){
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://47.92.69.29:8000/sign-in";
-        //String renderURL = "http://47.92.69.29/render";
         JSONObject sign_inJSON = new JSONObject();
         try {
             sign_inJSON.put("userName", email);
@@ -177,8 +176,8 @@ public class log_in extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(log_in.this, "Error "+error, Toast.LENGTH_LONG).show();
-                Intent GotoProfile = new Intent(log_in.this, profile_main.class);
-                startActivity(GotoProfile);
+                //Intent GotoProfile = new Intent(log_in.this, profile_main.class);
+                //startActivity(GotoProfile);
                 error.printStackTrace();
                 SendRet = false;
                 }
@@ -193,7 +192,6 @@ public class log_in extends AppCompatActivity {
     public void MySignUp(){
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://47.92.69.29:8000/sign-up";
-        //String renderURL = "http://47.92.69.29/render";
         JSONObject sign_inJSON = new JSONObject();
         try {
             sign_inJSON.put("userName", "mario");

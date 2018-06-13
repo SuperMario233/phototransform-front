@@ -1,14 +1,14 @@
 package com.binarypheasant.freestyle;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.util.Base64;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,7 +20,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -179,7 +178,12 @@ public class choose_filter extends AppCompatActivity {
     }
 
     public void onClickMoreFilters(View view) {
-        Toast.makeText(choose_filter.this, "你点击了\"更多滤镜\"", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(choose_filter.this,FilterGallery.class);
+        //check sessionKey first
+        intent.putExtra("choose",0);
+        intent.putExtra("needResult",true);
+        startActivityForResult(intent,0);
+
     }
 
     public void onClickEdit(View view) {
@@ -195,4 +199,10 @@ public class choose_filter extends AppCompatActivity {
         Toast.makeText(choose_filter.this, "你点击了\"选区\"", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        String photo_url = data.getStringExtra("photo_url");
+        Toast.makeText(choose_filter.this, "滤镜"+resultCode+":"+photo_url, Toast.LENGTH_SHORT).show();
+    }
 }

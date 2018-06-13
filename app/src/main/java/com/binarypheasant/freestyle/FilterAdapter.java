@@ -24,7 +24,7 @@ public class FilterAdapter extends ArrayAdapter {
         ImageView fruitImage = (ImageView) view.findViewById(R.id.filter_item);//获取该布局内的图片视图
         TextView fruitName = (TextView) view.findViewById(R.id.filter_name);//获取该布局内的文本视图
         fruitImage.setImageResource(fruit.getFilterImage());//为图片视图设置图片资源
-        fruitName.setText(fruit.getFilterName());//为文本视图设置文本内容
+        fruitName.setText(fruit.getFilterName()+fruit.tag);//为文本视图设置文本内容
         return view;
     }
 }
