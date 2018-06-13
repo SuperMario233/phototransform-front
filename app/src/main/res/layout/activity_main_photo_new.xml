@@ -10,13 +10,14 @@
         android:id="@+id/imageView2"
         android:layout_width="360dp"
         android:layout_height="640dp"
+        android:layout_marginTop="-23dp"
         android:alpha="0.65"
         android:contentDescription="background"
         android:gravity="center"
         android:radius="15dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/background"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/background" />
 
     <ImageView
         android:layout_width="200dp"
