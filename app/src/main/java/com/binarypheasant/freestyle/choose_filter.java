@@ -202,7 +202,7 @@ public class choose_filter extends AppCompatActivity {
                         }
                         progressDialog.dismiss();
                     }
-                },new Response.ErrorListener(){
+                }, new Response.ErrorListener(){
             @Override
             public void onErrorResponse(VolleyError volleyError) {
                 progressDialog.dismiss();
@@ -299,7 +299,6 @@ public class choose_filter extends AppCompatActivity {
 
         return filePath;
     }
-
 
     public void onClickMoreFilters(View view) {
         Toast.makeText(choose_filter.this, "你点击了\"更多滤镜\"", Toast.LENGTH_SHORT).show();
