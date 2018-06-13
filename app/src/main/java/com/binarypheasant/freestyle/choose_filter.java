@@ -4,7 +4,6 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,9 +14,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.util.Base64;
-import android.widget.ImageButton;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -27,7 +27,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
@@ -43,7 +42,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 
 public class choose_filter extends AppCompatActivity {
@@ -102,8 +100,8 @@ public class choose_filter extends AppCompatActivity {
             Toast.makeText(choose_filter.this, "读取照片失败！", Toast.LENGTH_LONG).show();
             photo = BitmapFactory.decodeResource(getResources(), R.drawable.selfie_maniac);
         }
-        ImageView imageView = (ImageView) findViewById(R.id.photoShow);
-        imageView.setImageBitmap(photo);
+        ImageView photoView = (ImageView) findViewById(R.id.photoShow);
+        photoView.setImageBitmap(photo);
 
         // 滤镜
         filterLayout = (LinearLayout) findViewById(R.id.linearScroll);
@@ -111,24 +109,27 @@ public class choose_filter extends AppCompatActivity {
         for (int i=0; i<filters.length; i++) {
             View view = layoutInflater.inflate(R.layout.scroll_filter_item, filterLayout, false);
 
-            final ImageButton imageButton = (ImageButton) view.findViewById(R.id.filter_item);
-            imageButton.setImageResource(filters[i]); // 设置图片
-            imageButton.setBackgroundColor(0); // 透明背景
-            imageButton.setTag(filterNames[i]); // 设置标签，后面可以用来知道本imageButton对应哪张图片
+            final MyImageView myImageView = (MyImageView) view.findViewById(R.id.filter_item);
+            myImageView.setImageResource(filters[i]); // 设置图片
+            myImageView.setBackgroundColor(0); // 透明背景
+            myImageView.setTag(filterNames[i]); // 设置标签，后面可以用来知道本imageView对应哪张图片
             // 点击样式和事件
             //final Drawable drawable = getResources().getDrawable(R.drawable.ic_done_white_48dp);
             //drawable.setAlpha(128);
-            imageButton.setOnClickListener(new View.OnClickListener() {
+            myImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    //imageButton.setForeground(drawable);
-                    //Integer resource = (Integer)imageButton.getTag();
+                    //imageView.setForeground(drawable);
+                    //Integer resource = (Integer)imageView.getTag();
                     //ImageView imageView = (ImageView) findViewById(R.id.photoShow);
                     //imageView.setImageResource(resource);
-                    filterStr = (String)imageButton.getTag();
+                    filterStr = (String)myImageView.getTag();
                     onRender();
                 }
             });
+            TextView name = (TextView) view.findViewById(R.id.filter_name);
+            name.setText("FF");
+
             filterLayout.addView(view);
         }
 
@@ -317,32 +318,42 @@ public class choose_filter extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         Log.v("yzjy", "herhehrehrehrherhehr");
         if (requestCode == filters_REQUEST_CODE) {
-            // 获取新的滤镜 Array
-            int[] newFilters = null;
-            String[] newFilterNames = null;
+
+            String url = null;
+            Bitmap bm = null;
+
+            // 获得图片url
             if (intent != null) {
-                String tmp = intent.getStringExtra("photo_url");
-//                newFilters = intent.getIntArrayExtra("newFilters");
-//                newFilterNames = intent.getStringArrayExtra("newFilterNames");
+                url = intent.getStringExtra("photo_url");
             } else {
-                Toast.makeText(choose_filter.this, "无法获得intent", Toast.LENGTH_SHORT).show();
+                Log.v("eeeeeeee", "无法获得intent！");
             }
 
-            // 将两个filter数组合并
-            // id or path?
-            int[] combFilters = new int[filters.length + newFilters.length];
-            System.arraycopy(newFilters, 0, combFilters, 0, newFilters.length);
-            System.arraycopy(filters, 0, combFilters, newFilters.length, filters.length);
-            filters = combFilters;
-            // name
-            String[] combFilterNames = new String[filterNames.length + newFilterNames.length];
-            System.arraycopy(newFilterNames, 0, combFilterNames, 0, newFilterNames.length);
-            System.arraycopy(filterNames, 0, combFilterNames, newFilterNames.length, filterNames.length);
-            filterNames = combFilterNames;
-            // 显示所有filter
-            initView(); // ToDO: 得设置照片为renderPhoto
+
+            // 在filter layout中加一个图
+            View view = layoutInflater.inflate(R.layout.scroll_filter_item, filterLayout, false);
+
+            final MyImageView myImageView = (MyImageView) view.findViewById(R.id.filter_item);
+            if (url == null) Log.v("EEEEEEEE", "URL为null！");
+            else Log.v("URL", url);
+            myImageView.setImageURL(url);
+            myImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    filterStr = (String)myImageView.getTag();
+                    onRender();
+                }
+            });
+            TextView name = (TextView) view.findViewById(R.id.filter_name);
+            name.setText("FF");
+
+            filterLayout.addView(view);
+
+            // 滑动到最后
+//            HorizontalScrollView hsv = (HorizontalScrollView) findViewById(R.id.filterScroll);
+//            hsv.scrollTo(HorizontalScrollView.FOCUS_RIGHT, 0);
         } else {
-            Toast.makeText(choose_filter.this, "请求码错误！", Toast.LENGTH_SHORT).show();
+            Log.v("eeeeee", "请求码错误！");
         }
     }
 

@@ -13,17 +13,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/filterScroll"
         app:srcCompat="@drawable/selfie_maniac" />
 
     <HorizontalScrollView
         android:id="@+id/filterScroll"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="120dp"
         android:background="#00000000"
+        android:scrollbars="none"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/photo_show"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/photoShow"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_chainStyle="packed">
@@ -39,16 +39,15 @@
 
     <Button
         android:id="@+id/moreFilterBtn"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
         android:background="#a0000000"
         android:onClick="onClickMoreFilters"
         android:text="更多滤镜"
         android:textColor="@android:color/white"
         android:textSize="16sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/filterScroll" />
+        app:layout_constraintBottom_toTopOf="@id/filterScroll"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
     <!--<LinearLayout-->
