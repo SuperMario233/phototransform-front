@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/constraint"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="360dp"
+        android:layout_height="640dp"
+        android:alpha="0.65"
+        android:contentDescription="background"
+        android:gravity="center"
+        android:radius="15dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/background"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="145dp"
+        android:layout_marginStart="80dp"
+
+        android:layout_marginTop="200dp"
+        android:contentDescription="title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/freestyle_logo" />
+
+    <TextView
+        android:id="@+id/photo_button"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="360dp"
+        android:alpha="0.72"
+        android:fontFamily="Roboto"
+        android:gravity="center"
+        android:radius="15dp"
+        android:text="@string/camera_choose"
+        android:textColor="@android:color/background_dark"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/gallery"
+        android:layout_width="160dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="410dp"
+        android:alpha="0.72"
+        android:fontFamily="Roboto"
+        android:gravity="center"
+        android:radius="15dp"
+        android:text="@string/gallery_choose"
+        android:textColor="@android:color/background_dark"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/sign_in"
+        android:layout_width="57dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="152dp"
+        android:layout_marginTop="550dp"
+        android:fontFamily="Roboto"
+        android:gravity="center"
+        android:text="@string/user_center"
+        android:textColor="@android:color/background_dark"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <Button
+        android:id="@+id/testbutton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+
+</android.support.constraint.ConstraintLayout>

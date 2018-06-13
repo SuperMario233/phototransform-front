@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +27,7 @@ public class prepublish extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_prepublish);
+        setContentView(R.layout.activity_prepublish_new);
         back=(ImageView)findViewById(R.id.back);
         share=(ImageView)findViewById(R.id.share);
         mainImage=(ImageView)findViewById(R.id.main_image);//ToDo
@@ -34,7 +36,8 @@ public class prepublish extends AppCompatActivity {
         filterPub=(ImageView)findViewById(R.id.filter_pub);
         //UMConfigure.init(this,"5a12384aa40fa3551f0001d1"
         //        ,"umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
-
+        Bitmap tempphoto = BitmapFactory.decodeResource(getResources(), R.drawable.selfie_maniac);
+        mainImage.setImageBitmap(tempphoto);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,6 +1,7 @@
 package com.binarypheasant.freestyle;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -53,6 +54,13 @@ public class choose_filter extends AppCompatActivity {
     }
 
     private void initData() {
+        Intent tmpIntent =getIntent();
+        if(tmpIntent!=null){
+            String photoPath=tmpIntent.getStringExtra("imagePath");
+            Toast.makeText(choose_filter.this,photoPath,Toast.LENGTH_SHORT).show();
+        }else {
+            Toast.makeText(choose_filter.this,"no Intent",Toast.LENGTH_SHORT).show();
+        }
         // 照片
         photo = BitmapFactory.decodeResource(getResources(), R.drawable.selfie_maniac);
         // 预定义滤镜

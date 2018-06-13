@@ -48,6 +48,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.tencent.connect.common.Constants;
@@ -68,9 +69,9 @@ import java.util.Date;
 import java.util.List;
 
 public class main_photo extends AppCompatActivity {
-    private ImageView sign;
-    private ImageView gallery;
-    private ImageView takePhoto;
+    private TextView sign;
+    private TextView gallery;
+    private TextView takePhoto;
     private TextureView cameraView;
     private String mCameraId = "0";
     private ImageReader imageReader;
@@ -87,14 +88,14 @@ public class main_photo extends AppCompatActivity {
     private String chooseFilePath;
 
 
-    private static final int MY_PERMISSIONS_REQUEST_CAMERA=1;
-    private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE=7;
-    private static final int REQUEST_CODE_PICK_IMAGE=3;
-    private static final int RESULT_CODE_CAMERA=1;
-    private static final int REQUEST_PHOTO_RESULT=4;
-    public final int TYPE_TAKE_PHOTO = 1;//Uri获取类型判断
+    private static final int MY_PERMISSIONS_REQUEST_CAMERA=2;
+    private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE=3;
+    private static final int REQUEST_CODE_PICK_IMAGE=4;
+    private static final int RESULT_CODE_CAMERA=5;
+    private static final int REQUEST_PHOTO_RESULT=6;
+    public final int TYPE_TAKE_PHOTO = 7;//Uri获取类型判断
 
-    public final int CODE_TAKE_PHOTO = 1;//相机RequestCode
+    public final int CODE_TAKE_PHOTO = 8;//相机RequestCode
 
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
     static
@@ -133,17 +134,18 @@ public class main_photo extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.activity_main_photo);
+        setContentView(R.layout.activity_main_photo_new);
+        Log.v("","setcontent");
 
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         builder.detectFileUriExposure();
 
-        sign=(ImageView) findViewById(R.id.sign_in);
-        gallery=(ImageView)findViewById(R.id.gallery);
-        takePhoto=(ImageView)findViewById(R.id.photo_button);
+        sign=findViewById(R.id.sign_in);
+        gallery=findViewById(R.id.gallery);
+        takePhoto=findViewById(R.id.photo_button);
         //cameraView=(TextureView)findViewById(R.id.camera_in);
-        iv=(ImageView)findViewById(R.id.photo_show);
+        //iv=(ImageView)findViewById(R.id.photo_show);
         tempButton=(Button)findViewById(R.id.testbutton);
 
 
@@ -202,16 +204,36 @@ public class main_photo extends AppCompatActivity {
     void takePicture(){
         Log.v("take","in");
         Intent takeIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri photoUri=getMediaFileUri(TYPE_TAKE_PHOTO);
+        Uri photoUri=null;
+        try {
+            photoUri = getMediaFileUri(TYPE_TAKE_PHOTO);
+        }catch (IOException ex){
+            Log.v("","error in getMediaFileUri");
+        }
         Log.v("","putExtra");
         takeIntent.putExtra(MediaStore.EXTRA_OUTPUT,photoUri);
         Log.v("","startAct");
         startActivityForResult(takeIntent,CODE_TAKE_PHOTO);
+        Log.v("","Finish Act");
         return;
     }
 
-    public Uri getMediaFileUri(int type){
+    public Uri getMediaFileUri(int type)throws IOException{
         Log.v("","getMedia");
+        String imageFileName="JPEG_"+new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date())+"_";
+        File storageDir=getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image=File.createTempFile(
+                imageFileName,
+                ".jpg",
+                storageDir
+        );
+        String mCurrentPhotoPath =image.getAbsolutePath();
+        Uri mUri=FileProvider.getUriForFile(this,"com.binarypheasant.freestyle.fileprovider",image);
+        filePath=mUri.getPath();
+        Log.v("",filePath);
+        Log.v("",mCurrentPhotoPath);
+        return mUri;
+        /*
         File mediaStorageDir= new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),"FreeStyle");
         if(!mediaStorageDir.exists()){
             if(!mediaStorageDir.mkdir()){
@@ -235,18 +257,21 @@ public class main_photo extends AppCompatActivity {
         else{
             Log.v("",mUri.getPath());
         }
+        Log.v("",mUri.getPath());
+        Log.v("",filePath);
         return mUri;
+        */
     }
 
 
 //选择照片部分
     void choosePhoto() {
-            File imagePath = new File(this.getFilesDir(), "images");
-            File newFile = new File(imagePath, "default_image.jpg");
-            Log.v("","before URI");
-            Log.v("",this.getFilesDir().getPath());
-            Log.v("",imagePath.getPath());
-            Log.v("",newFile.getPath());
+            //File imagePath = new File(this.getFilesDir(), "images");
+            //File newFile = new File(imagePath, "default_image.jpg");
+            //Log.v("","before URI");
+            //Log.v("",this.getFilesDir().getPath());
+            //Log.v("",imagePath.getPath());
+            //Log.v("",newFile.getPath());
             //Uri contentUri = FileProvider.getUriForFile(this, "com.binarypheasant.freestyle.fileprovider", newFile);
             Log.v("","before Intent");
             Intent chooseInt=new Intent(Intent.ACTION_PICK);
@@ -274,7 +299,7 @@ public class main_photo extends AppCompatActivity {
             Log.v("","Zoom activity result");
             Bundle extras=data.getExtras();
             Bitmap bmp=BitmapFactory.decodeFile(chooseFilePath);
-            iv.setImageBitmap(bmp);
+            //iv.setImageBitmap(bmp);
             Intent filterIntent=new Intent(main_photo.this,choose_filter.class);
             filterIntent.putExtra("imagePath",chooseFilePath);
             startActivity(filterIntent);
@@ -282,7 +307,7 @@ public class main_photo extends AppCompatActivity {
                 Bitmap photo=extras.getParcelable("data");
                 ByteArrayOutputStream stream=new ByteArrayOutputStream();
                 photo.compress(Bitmap.CompressFormat.JPEG,75,stream);// (0-100)压缩文件
-                iv.setImageBitmap(photo);
+                //iv.setImageBitmap(photo);
             }else{
                 Log.v("","extra null");
             }
@@ -291,7 +316,7 @@ public class main_photo extends AppCompatActivity {
             Log.v("","Take photo result");
             Bundle extras=data.getExtras();
             Bitmap bmp=BitmapFactory.decodeFile(filePath);
-            iv.setImageBitmap(bmp);
+            //iv.setImageBitmap(bmp);
             Intent filterIntent=new Intent(main_photo.this,choose_filter.class);
             filterIntent.putExtra("imagePath",filePath);
             startActivity(filterIntent);
