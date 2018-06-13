@@ -303,25 +303,27 @@ public class choose_filter extends AppCompatActivity {
     public void onClickMoreFilters(View view) {
         Toast.makeText(choose_filter.this, "你点击了\"更多滤镜\"", Toast.LENGTH_SHORT).show();
         // ToDO: 打开滤镜画廊，获取滤镜后添加到filters[]中，然后重新加载滤镜显示栏，并把新的排到前面
-//        Intent intent = new Intent(choose_filter.this, FilterGallery.class);
-//        // check sessionKey first
-//
-//        //
-//        intent.putExtra("choose",0);
-//        intent.putExtra("needResult",true);
-//        startActivityForResult(intent, filters_REQUEST_CODE);
+        Intent intent = new Intent(choose_filter.this, FilterGallery.class);
+        // check sessionKey first
+
+        //
+        intent.putExtra("choose",0);
+        intent.putExtra("needResult",true);
+        startActivityForResult(intent, filters_REQUEST_CODE);
     }
 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        Log.v("yzjy", "herhehrehrehrherhehr");
         if (requestCode == filters_REQUEST_CODE) {
             // 获取新的滤镜 Array
             int[] newFilters = null;
             String[] newFilterNames = null;
             if (intent != null) {
-                newFilters = intent.getIntArrayExtra("newFilters");
-                newFilterNames = intent.getStringArrayExtra("newFilterNames");
+                String tmp = intent.getStringExtra("photo_url");
+//                newFilters = intent.getIntArrayExtra("newFilters");
+//                newFilterNames = intent.getStringArrayExtra("newFilterNames");
             } else {
                 Toast.makeText(choose_filter.this, "无法获得intent", Toast.LENGTH_SHORT).show();
             }

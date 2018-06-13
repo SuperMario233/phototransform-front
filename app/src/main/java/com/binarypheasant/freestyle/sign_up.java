@@ -29,21 +29,7 @@ public class sign_up extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        // set up spinner
-        Spinner spinner = (Spinner) findViewById(R.id.spinner_phoneRegion);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view,
-                                       int pos, long id) {
-                //String[] phone_regions = getResources().getStringArray(R.array.phone_region);
-                //String phone_region = phone_regions[pos];
-                //Toast.makeText(sign_up.this, "你选择的地区为"+ phone_region, Toast.LENGTH_LONG).show();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-                // Another interface callback
-            }
-        });
+
     }
 
     public void login(View view) {
@@ -136,7 +122,7 @@ public class sign_up extends AppCompatActivity {
 //            userInfo.put("mobile", phoneNumberStr);
 //            userInfo.put("authCode", veriCodeStr);
             userInfo.put("userName", emailStr);
-            userInfo.put("pwd", passwordStr);
+            userInfo.put("pwd", Encrypt.encrypt(passwordStr));
             userInfo.put("nickName", "null");
             userInfo.put("sex", "male");
             userInfo.put("mobile", phoneNumberStr);
