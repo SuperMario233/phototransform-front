@@ -153,7 +153,6 @@ public class profile_main extends AppCompatActivity {
         ImageView cameraView = (ImageView) findViewById(R.id.camera);
         cameraView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                logout();
                 Intent Gotomain_photo = new Intent(profile_main.this, main_photo.class);
                 startActivity(Gotomain_photo);
             }
