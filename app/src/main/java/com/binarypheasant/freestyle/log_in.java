@@ -3,21 +3,35 @@ package com.binarypheasant.freestyle;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.tencent.connect.common.Constants;
 import com.tencent.tauth.IUiListener;
 import com.tencent.tauth.Tencent;
 import com.tencent.tauth.UiError;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class log_in extends AppCompatActivity {
 
     // UI references.
     private Tencent mTencent;
+    static String sessionKey;
+    public String statusCode;
+    private boolean SendRet;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -36,66 +50,21 @@ public class log_in extends AppCompatActivity {
     private class BaseUiListener implements IUiListener {
         public void onComplete(Object response) {
             // TODO Auto-generated method stub
-            Toast.makeText(getApplicationContext(), "登录成功", Toast.LENGTH_SHORT).show();
+            String openidString = null;
+            Toast.makeText(getApplicationContext(), "授权成功", Toast.LENGTH_SHORT).show();
             /*
              * 下面隐藏的是用户登录成功后 登录用户数据的获取的方法
              * 共分为两种  一种是简单的信息的获取,另一种是通过UserInfo类获取用户较为详细的信息
              *有需要看看
              * */
-          /*  try {
+           try {
                 //获得的数据是JSON格式的，获得你想获得的内容
                 //如果你不知道你能获得什么，看一下下面的LOG
-                Log.v("----TAG--", "-------------"+response.toString());
                 openidString = ((JSONObject) response).getString("openid");
-                mTencent.setOpenId(openidString);
-
-                mTencent.setAccessToken(((JSONObject) response).getString("access_token"),((JSONObject) response).getString("expires_in"));
-
-
-                Log.v("TAG", "-------------"+openidString);
-                //access_token= ((JSONObject) response).getString("access_token");              //expires_in = ((JSONObject) response).getString("expires_in");
-            } catch (JSONException e) {
-                // TODO Auto-generated catch block
+                } catch (JSONException e) {
                 e.printStackTrace();
             }
-            */
-          /*
-
-            QQToken qqToken = mTencent.getQQToken();
-            UserInfo info = new UserInfo(getApplicationContext(), qqToken);
-
-            //    info.getUserInfo(new BaseUIListener(this,"get_simple_userinfo"));
-            info.getUserInfo(new IUiListener() {
-                @Override
-                public void onComplete(Object o) {
-                    //用户信息获取到了
-
-                    try {
-
-                        Toast.makeText(getApplicationContext(), ((JSONObject) o).getString("nickname")+((JSONObject) o).getString("gender"), Toast.LENGTH_SHORT).show();
-                        Log.v("UserInfo",o.toString());
-                        Intent intent1 = new Intent(log_in.this,MainActivity.class);
-                        startActivity(intent1);
-                        finish();
-                    } catch (JSONException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onError(UiError uiError) {
-                    Log.v("UserInfo","onError");
-                }
-
-                @Override
-                public void onCancel() {
-                    Log.v("UserInfo","onCancel");
-                }
-            });*/
-                Intent GotoProfile = new Intent(log_in.this, profile.class);
-                //add info
-                startActivity(GotoProfile);
+           boolean result = SendToSever(openidString,"");
         }
 
         @Override
@@ -124,17 +93,22 @@ public class log_in extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent GotoProfile = new Intent(log_in.this, profile.class);
+                Intent GotoProfile = new Intent(log_in.this, profile_main.class);
                 EditText user_emailText = findViewById(R.id.emailText);
                 EditText user_passwordText = findViewById(R.id.passwordText);
                 String user_email = user_emailText.getText().toString();
                 String user_password = user_passwordText.getText().toString();
+                if(TextUtils.isEmpty(user_email)){
+                    user_emailText.setError("用户名不能为空");
+                    return;
+                }
+                if(TextUtils.isEmpty(user_password)){
+                    user_passwordText.setError("密码不能为空");
+                    return;
+                }
                 boolean result = SendToSever(user_email,user_password);
                 //send email and password to somewhere
-                if (result){
-                    GotoProfile.putExtra("UserMessage",user_email);
-                    startActivity(GotoProfile);
-                }
+                //if (result) startActivity(GotoProfile);
             }
         });
         Button logupButton = (Button) findViewById(R.id.logupButton);
@@ -143,11 +117,12 @@ public class log_in extends AppCompatActivity {
             public void onClick(View view) {
                 Intent GotoSignUp = new Intent(log_in.this, sign_up.class);
                 startActivity(GotoSignUp);
+                /*MySignUp();*/
             }
         });
-        Button QQButton = (Button) findViewById(R.id.qqloginButton);
-        QQButton.setOnClickListener(new View.OnClickListener() {
-            @Override
+
+        ImageView qqView = (ImageView) findViewById(R.id.qqView);
+        qqView.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 mTencent.login(log_in.this,"all",new log_in.BaseUiListener());
             }
@@ -155,7 +130,106 @@ public class log_in extends AppCompatActivity {
     }
 
     public boolean SendToSever(String email,String password){
-        return true;
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://47.92.69.29:8000/sign-in";
+        JSONObject sign_inJSON = new JSONObject();
+        try {
+            sign_inJSON.put("userName", email);
+            if(password.equals("")) sign_inJSON.put("pwd", password);
+            else sign_inJSON.put("pwd", Encrypt.encrypt(password));
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, sign_inJSON,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // 需要判断返回码
+                        //// parse the response
+                        try{
+                            statusCode = response.getString("statusCode");
+                            sessionKey = response.getString("sessionKey");
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                        //Toast.makeText(log_in.this, "statusCode:"+statusCode, Toast.LENGTH_LONG).show();
+                        //SendRet = false;
+
+                        if(statusCode.equals("401")){
+                            Toast.makeText(log_in.this, "账号或密码错误", Toast.LENGTH_LONG).show();
+                            SendRet = false;
+                        }
+                        else if (statusCode.equals("200")){
+                            Toast.makeText(log_in.this, "登录成功", Toast.LENGTH_LONG).show();
+                            Intent GotoProfile = new Intent(log_in.this, profile_main.class);
+                            startActivity(GotoProfile);
+                            SendRet = true;
+                        }
+                        else{
+                            Toast.makeText(log_in.this, "其他错误：返回值"+statusCode, Toast.LENGTH_LONG).show();
+                            SendRet = false;
+                        }/**/
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(log_in.this, "Error "+error, Toast.LENGTH_LONG).show();
+                //Intent GotoProfile = new Intent(log_in.this, profile_main.class);
+                //startActivity(GotoProfile);
+                error.printStackTrace();
+                SendRet = false;
+                }
+        }
+        );
+
+        // Add the request to the RequestQueue.
+        queue.add(jsonRequest);
+        return SendRet;
+    }
+
+    public void MySignUp(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = "http://47.92.69.29:8000/sign-up";
+        JSONObject sign_inJSON = new JSONObject();
+        try {
+            sign_inJSON.put("userName", "mario");
+            sign_inJSON.put("pwd", Encrypt.encrypt("123456"));
+            sign_inJSON.put("nickName","Mario");
+            sign_inJSON.put("sex","M");
+            sign_inJSON.put("mobile","18101276635");
+            sign_inJSON.put("birthday","1997-03-20");
+            sign_inJSON.put("portrait","");
+        } catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        // Request a string response from the provided URL.
+        JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, sign_inJSON,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // 需要判断返回码
+                        //// parse the response
+                        try{
+                            statusCode = response.getString("statusCode");
+                            sessionKey = response.getString("sessionKey");
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
+                        Toast.makeText(log_in.this, "statusCode:"+statusCode, Toast.LENGTH_LONG).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(log_in.this, "Error "+error, Toast.LENGTH_LONG).show();
+                error.printStackTrace();
+                SendRet = false;
+            }
+        }
+        );
+        queue.add(jsonRequest);
     }
 
 }

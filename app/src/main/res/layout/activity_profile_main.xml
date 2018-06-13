@@ -47,11 +47,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_width="83dp"
+        android:id="@+id/nickname"
+        android:layout_width="183dp"
         android:layout_height="25dp"
-        android:layout_marginStart="118dp"
-        android:layout_marginTop="104dp"
-        android:gravity="center"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="74dp"
+        android:gravity="left"
         android:left="118dp"
         android:text="用户昵称"
         android:textSize="16sp"
@@ -61,6 +62,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
+        android:id="@+id/edit"
         android:layout_width="108dp"
         android:layout_height="25dp"
         android:layout_marginStart="118dp"
@@ -160,6 +162,19 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <ImageView
+        android:id="@+id/camera"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="156dp"
+        android:layout_marginTop="490dp"
+        android:left="72dp"
+        android:src="@drawable/freestyle_icon"
+        android:top="312dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_behind"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
         android:id="@+id/login"
         android:layout_width="40dp"
         android:layout_height="40dp"
@@ -186,14 +201,29 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
     <TextView
-    android:id="@+id/text_filter"
+        android:id="@+id/text_filter"
+        android:layout_width="57dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="379dp"
+        android:gravity="center"
+        android:left="64dp"
+        android:text="滤镜画廊"
+        android:textSize="14sp"
+        android:top="359dp"
+        app:layout_constraintBottom_toTopOf="@+id/view_behind"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+    android:id="@+id/text_about"
     android:layout_width="57dp"
     android:layout_height="23dp"
     android:layout_marginStart="64dp"
-    android:layout_marginTop="359dp"
+    android:layout_marginTop="557dp"
     android:gravity="center"
     android:left="64dp"
-    android:text="滤镜画廊"
+    android:text="关于我们"
     android:textSize="14sp"
     android:top="359dp"
     app:layout_constraintBottom_toTopOf="@+id/view_behind"
@@ -201,14 +231,14 @@
     app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/text_about"
+        android:id="@+id/text_camera"
         android:layout_width="57dp"
         android:layout_height="23dp"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="537dp"
+        android:layout_marginStart="153dp"
+        android:layout_marginTop="557dp"
         android:gravity="center"
         android:left="64dp"
-        android:text="关于我们"
+        android:text="主界面"
         android:textSize="14sp"
         android:top="359dp"
         app:layout_constraintBottom_toTopOf="@+id/view_behind"
@@ -220,7 +250,7 @@
         android:layout_width="57dp"
         android:layout_height="23dp"
         android:layout_marginStart="153dp"
-        android:layout_marginTop="359dp"
+        android:layout_marginTop="379dp"
         android:gravity="center"
         android:left="153dp"
         android:text="切换用户"
@@ -235,7 +265,7 @@
         android:layout_width="57dp"
         android:layout_height="23dp"
         android:layout_marginStart="230dp"
-        android:layout_marginTop="359dp"
+        android:layout_marginTop="379dp"
         android:gravity="center"
         android:left="230dp"
         android:text="退出登录"
