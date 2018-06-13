@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+
+import java.io.File;
 
 //import com.umeng.socialize.UMShareConfig;
 //applekey=
@@ -24,6 +27,7 @@ public class prepublish extends AppCompatActivity {
     private ImageView filterPub;
     boolean isSaved=false;
     private Context context=this;
+    private String imagePath;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +41,11 @@ public class prepublish extends AppCompatActivity {
         //UMConfigure.init(this,"5a12384aa40fa3551f0001d1"
         //        ,"umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
         Bitmap tempphoto = BitmapFactory.decodeResource(getResources(), R.drawable.selfie_maniac);
-        mainImage.setImageBitmap(tempphoto);
+        Intent getImageInt=getIntent();
+        imagePath=getImageInt.getStringExtra("imagePath");
+        Bitmap imageGet=BitmapFactory.decodeFile(imagePath);
+        //mainImage.setImageBitmap(tempphoto);
+        mainImage.setImageBitmap(imageGet);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,12 +59,13 @@ public class prepublish extends AppCompatActivity {
                     querySave.setNegativeButton("返回", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-
                         }
                     });
                     querySave.setPositiveButton("退出", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
+                            File file=new File(imagePath);
+                            file.delete();
                             prepublish.this.finish();
                         }
                     });

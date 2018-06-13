@@ -51,7 +51,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.tencent.connect.common.Constants;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -86,7 +95,9 @@ public class main_photo extends AppCompatActivity {
     private Button tempButton;
     private String filePath;
     private String chooseFilePath;
-
+    private String  url = "http://47.92.69.29/get-userinfo";
+    private String sessionKey;
+    private String statusCode;
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA=2;
     private static final int MY_PERMISSIONS_REQUEST_EXTERNAL_STORAGE=3;
@@ -160,8 +171,49 @@ public class main_photo extends AppCompatActivity {
         sign.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                /*
                 Intent SignInt=new Intent(main_photo.this,log_in.class);
                 startActivity(SignInt);
+                */
+                RequestQueue queue = Volley.newRequestQueue(main_photo.this);
+                JSONObject getInfoJSON=new JSONObject();
+                try{
+                    getInfoJSON.put("sessionKey",sessionKey);
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
+                // Request a string response from the provided URL.
+                JsonObjectRequest jsonRequest = new JsonObjectRequest(Request.Method.POST, url, getInfoJSON,
+                            new Response.Listener<JSONObject>(){
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    // 需要判断返回码
+                                    //// parse the response
+                                    try{
+                                        statusCode = response.getString("statusCode");
+                                    }catch (JSONException e){
+                                        e.printStackTrace();
+                                    }
+                                    //Toast.makeText(main_photo.this, "statusCode:"+statusCode, Toast.LENGTH_LONG).show();
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(main_photo.this, "Error "+error, Toast.LENGTH_LONG).show();
+                            error.printStackTrace();
+                        }
+                    }
+                    );
+                    queue.add(jsonRequest);
+                if(statusCode.equals("401")){
+                    Intent logIntent=new Intent(main_photo.this,log_in.class);
+                    startActivity(logIntent);
+                }
+                if(statusCode.equals("200")){
+                    Intent profileInt=new Intent(main_photo.this,profile_main.class);
+                    startActivity(profileInt);
+                }
+
             }
         });
 
