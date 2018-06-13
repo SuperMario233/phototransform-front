@@ -12,11 +12,20 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.umeng.commonsdk.UMConfigure;
+import com.umeng.socialize.PlatformConfig;
+import com.umeng.socialize.ShareAction;
+import com.umeng.socialize.UMShareAPI;
 
 import java.io.File;
 
-//import com.umeng.socialize.UMShareConfig;
-//applekey=
+import com.umeng.socialize.UMShareConfig;
+import com.umeng.socialize.UMShareListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.media.UMImage;
+
 
 public class prepublish extends AppCompatActivity {
     private ImageView back;
@@ -38,14 +47,18 @@ public class prepublish extends AppCompatActivity {
         edit=(ImageView)findViewById(R.id.edit);
         save=(ImageView)findViewById(R.id.save);
         filterPub=(ImageView)findViewById(R.id.filter_pub);
-        //UMConfigure.init(this,"5a12384aa40fa3551f0001d1"
-        //        ,"umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
-        Bitmap tempphoto = BitmapFactory.decodeResource(getResources(), R.drawable.selfie_maniac);
+        UMConfigure.init(this,"5b08fb298f4a9d6c18000253"
+                ,"umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
+        PlatformConfig.setWeixin("wxdc1e388c3822c80b", "3baf1193c85774b3fd9d18447d76cab0");
+        PlatformConfig.setSinaWeibo("975220766", "3db78fd6875be7770fba3237208762e3","https://api.weibo.com/oauth2/default.html");
+        PlatformConfig.setQQZone("1106748887", "a8KJgGiMruNMgi7x");
+        //52a3b473aeb9e9d42fc42070d30bb8c6签名
+        final Bitmap tempphoto = BitmapFactory.decodeResource(getResources(), R.drawable.selfie_maniac);
         Intent getImageInt=getIntent();
         imagePath=getImageInt.getStringExtra("imagePath");
         Bitmap imageGet=BitmapFactory.decodeFile(imagePath);
-        //mainImage.setImageBitmap(tempphoto);
-        mainImage.setImageBitmap(imageGet);
+        mainImage.setImageBitmap(tempphoto);
+        //mainImage.setImageBitmap(imageGet);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,7 +90,12 @@ public class prepublish extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {//ToDo
             @Override
             public void onClick(View view) {
-
+                //File imageFile=new File(imagePath);
+                //UMImage image=new UMImage(prepublish.this,imageFile);
+                UMImage tempimage=new UMImage(prepublish.this,tempphoto);
+                Log.v("","startshare");
+                new ShareAction(prepublish.this).withText("FreeStyle").withMedia(tempimage).setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN)
+                        .setCallback(umShareListener).open();
             }
         });
         edit.setOnClickListener(new View.OnClickListener() {
@@ -101,5 +119,31 @@ public class prepublish extends AppCompatActivity {
                 //ToDo 还没有相关功能的activity，功能：跳转到滤镜发布界面，传输数据：滤镜图片（所以应该把choose_filter界面的filter也接收到这个activity里然后再传下去？）
             }
         });
+    }
+    private UMShareListener umShareListener=new UMShareListener() {
+        @Override
+        public void onStart(SHARE_MEDIA share_media) {
+
+        }
+
+        @Override
+        public void onResult(SHARE_MEDIA share_media) {
+            Toast.makeText(prepublish.this,"分享成功！",Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(SHARE_MEDIA share_media, Throwable throwable) {
+
+        }
+
+        @Override
+        public void onCancel(SHARE_MEDIA share_media) {
+
+        }
+    };
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
 }

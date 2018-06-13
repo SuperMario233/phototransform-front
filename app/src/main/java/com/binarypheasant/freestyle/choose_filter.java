@@ -158,6 +158,7 @@ public class choose_filter extends AppCompatActivity {
                     // display in the imageView
                     ImageView imageView = (ImageView) findViewById(R.id.photoShow);
                     imageView.setImageBitmap(renderPhoto);
+
                     Toast.makeText(choose_filter.this, "图片已显示", Toast.LENGTH_SHORT).show();
 
                 } else {

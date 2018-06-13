@@ -280,7 +280,7 @@ public class main_photo extends AppCompatActivity {
                 storageDir
         );
         String mCurrentPhotoPath =image.getAbsolutePath();
-        Uri mUri=FileProvider.getUriForFile(this,"com.binarypheasant.freestyle.fileprovider",image);
+        Uri mUri=subFileProvider.getUriForFile(this,"com.binarypheasant.freestyle.subFileProvider",image);
         filePath=mUri.getPath();
         Log.v("",filePath);
         Log.v("",mCurrentPhotoPath);
@@ -351,6 +351,7 @@ public class main_photo extends AppCompatActivity {
             Log.v("","Zoom activity result");
             Bundle extras=data.getExtras();
             Bitmap bmp=BitmapFactory.decodeFile(chooseFilePath);
+            chooseFilePath=handleImageOnKitKat(data);
             //iv.setImageBitmap(bmp);
             Intent filterIntent=new Intent(main_photo.this,choose_filter.class);
             filterIntent.putExtra("imagePath",chooseFilePath);

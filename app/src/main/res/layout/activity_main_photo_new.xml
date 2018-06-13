@@ -11,7 +11,7 @@
         android:layout_width="360dp"
         android:layout_height="640dp"
         android:layout_marginTop="-23dp"
-        android:alpha="0.65"
+        android:alpha="0.5"
         android:contentDescription="background"
         android:gravity="center"
         android:radius="15dp"
@@ -81,16 +81,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
+        app:layout_constraintGuide_end="364dp" />
 
     <Button
         android:id="@+id/testbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1000dp"
+        android:layout_width="88dp"
+        android:layout_height="48dp"
         android:text="Button"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
+        tools:layout_editor_absoluteX="49dp"
+        tools:layout_editor_absoluteY="640dp" />
 
 
 </android.support.constraint.ConstraintLayout>
