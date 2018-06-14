@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     
-    <ImageButton
+    <com.binarypheasant.freestyle.MyImageView
         android:id="@+id/filter_item"
         android:layout_width="100dp"
-        android:layout_height="match_parent" />
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        android:layout_gravity="center"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/filter_name"
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:text="TextView"
+        android:gravity="center"
+        app:layout_constraintTop_toBottomOf="@id/filter_item" />
 
 </android.support.constraint.ConstraintLayout>

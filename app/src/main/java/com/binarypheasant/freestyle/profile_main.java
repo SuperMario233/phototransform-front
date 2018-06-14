@@ -26,7 +26,7 @@ public class profile_main extends AppCompatActivity {
     public String historyString,favoriteString;
     public Bitmap Photo;
     public String userName;
-    public boolean sex;
+    public boolean sex,needResult;
     static int historyNum,favoriteNum;
     static int[] favorite_item,history_item;
     private String hotString,filter_name,filter_description,filter_url;
@@ -75,7 +75,13 @@ public class profile_main extends AppCompatActivity {
                         }catch (JSONException e){
                             e.printStackTrace();
                         }
-                        if (statusCode.equals("401")) return;//Toast.makeText(profile_main.this, "用户不存在", Toast.LENGTH_LONG).show();
+                        if (statusCode.equals("401")){
+                            if(needResult){
+                                setResult(0);
+                                finish();
+                            }
+                            return;
+                        }
                         else if(statusCode.equals("200")){
                             //Toast.makeText(profile_main.this, "用户信息获取成功", Toast.LENGTH_LONG).show();
                             TextView nicknameView = findViewById(R.id.nickname);
@@ -88,6 +94,10 @@ public class profile_main extends AppCompatActivity {
                             favoriteString = favoriteNum + "\n我的收藏";
                             myhistory.setText(historyString);//设置历史记录
                             myfavorite.setText(favoriteString);//设置我的收藏
+                            if(needResult){
+                                setResult(1);
+                                finish();
+                            }
                             /*
                             if(content != null) {//显示头像
                                 byte[] bitmapArray;
@@ -98,12 +108,22 @@ public class profile_main extends AppCompatActivity {
                                 imageView.setImageBitmap(Photo);
                             }*/
                         }
-                        else Toast.makeText(profile_main.this, "错误码："+statusCode, Toast.LENGTH_LONG).show();
+                        else{
+                            Toast.makeText(profile_main.this, "错误码："+statusCode, Toast.LENGTH_LONG).show();
+                            if(needResult){
+                                setResult(0);
+                                finish();
+                            }
+                        }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(profile_main.this, "Error "+error, Toast.LENGTH_LONG).show();
+                if(needResult){
+                    setResult(0);
+                    finish();
+                }
                 error.printStackTrace();
             }
         }
@@ -117,6 +137,9 @@ public class profile_main extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_main);
+
+        Intent intent = getIntent();
+        needResult = intent.getBooleanExtra("needResult",false);
 
         GetUserInfo();//获取用户信息
 
@@ -201,6 +224,7 @@ public class profile_main extends AppCompatActivity {
             }
         });
     }
+
     private void logout(){
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://47.92.69.29:8000/log-out";
