@@ -8,41 +8,23 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Camera;
-import android.graphics.ImageFormat;
-import android.graphics.SurfaceTexture;
-import android.graphics.drawable.GradientDrawable;
-import android.hardware.camera2.CameraAccessException;
 import android.hardware.camera2.CameraCaptureSession;
-import android.hardware.camera2.CameraCharacteristics;
 import android.hardware.camera2.CameraDevice;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CameraMetadata;
-import android.hardware.camera2.CaptureFailure;
 import android.hardware.camera2.CaptureRequest;
-import android.hardware.camera2.TotalCaptureResult;
-import android.hardware.camera2.params.StreamConfigurationMap;
-import android.media.Image;
 import android.media.ImageReader;
 import android.net.Uri;
-import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.DocumentsContract;
 import android.provider.MediaStore;
-import android.provider.SyncStateContract;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.TextureView;
 import android.view.View;
 import android.view.Window;
@@ -57,7 +39,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
-import com.tencent.connect.common.Constants;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -65,17 +46,10 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 
 public class main_photo extends AppCompatActivity {
     private TextView sign;
@@ -95,8 +69,7 @@ public class main_photo extends AppCompatActivity {
     private Button tempButton;
     private String filePath;
     private String chooseFilePath;
-    private String  url = "http://47.92.69.29/get-userinfo";
-    private String sessionKey;
+    private String  url = "http://47.92.69.29:8000/get-userinfo";
     private String statusCode;
 
     private static final int MY_PERMISSIONS_REQUEST_CAMERA=2;
@@ -178,7 +151,7 @@ public class main_photo extends AppCompatActivity {
                 RequestQueue queue = Volley.newRequestQueue(main_photo.this);
                 JSONObject getInfoJSON=new JSONObject();
                 try{
-                    getInfoJSON.put("sessionKey",sessionKey);
+                    getInfoJSON.put("sessionKey",log_in.sessionKey);
                 }catch (JSONException e){
                     e.printStackTrace();
                 }
@@ -194,6 +167,14 @@ public class main_photo extends AppCompatActivity {
                                     }catch (JSONException e){
                                         e.printStackTrace();
                                     }
+                                    if(statusCode.equals("401")){
+                                        Intent logIntent=new Intent(main_photo.this,log_in.class);
+                                        startActivity(logIntent);
+                                    }
+                                    if(statusCode.equals("200")){
+                                        Intent profileInt=new Intent(main_photo.this,profile_main.class);
+                                        startActivity(profileInt);
+                                    }
                                     //Toast.makeText(main_photo.this, "statusCode:"+statusCode, Toast.LENGTH_LONG).show();
                                 }
                             }, new Response.ErrorListener() {
@@ -205,15 +186,6 @@ public class main_photo extends AppCompatActivity {
                     }
                     );
                     queue.add(jsonRequest);
-                if(statusCode.equals("401")){
-                    Intent logIntent=new Intent(main_photo.this,log_in.class);
-                    startActivity(logIntent);
-                }
-                if(statusCode.equals("200")){
-                    Intent profileInt=new Intent(main_photo.this,profile_main.class);
-                    startActivity(profileInt);
-                }
-
             }
         });
 
