@@ -4,17 +4,16 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.util.Base64;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +48,7 @@ public class choose_filter extends AppCompatActivity {
     private LinearLayout filterLayout;
     private int[] filters;
     private String[] filterNames;
+    private String[] names;
     private LayoutInflater layoutInflater;
     private String photoPath;
     private Bitmap photo; // 应该是从相机或者相册中获得，考虑使用Intent传递？
@@ -91,6 +91,7 @@ public class choose_filter extends AppCompatActivity {
         // 预定义滤镜
         filters = new int[] { R.drawable.f1, R.drawable.f2, R.drawable.f3, R.drawable.f4};
         filterNames = new String[] {"1", "2", "3", "4"};
+        names = new String[] {"Salon", "China Horse", "Alien City", "The Gate"};
     }
 
     private void initView() {
@@ -129,7 +130,7 @@ public class choose_filter extends AppCompatActivity {
                 }
             });
             TextView name = (TextView) view.findViewById(R.id.filter_name);
-            name.setText("FF");
+            name.setText(names[i]);
 
             filterLayout.addView(view);
         }
@@ -314,12 +315,13 @@ public class choose_filter extends AppCompatActivity {
         Log.v("yzjy", "herhehrehrehrherhehr");
         if (requestCode == filters_REQUEST_CODE) {
 
-            String url = null;
+            String url = null, nameString = null;
             Bitmap bm = null;
 
             // 获得图片url
             if (intent != null) {
                 url = intent.getStringExtra("photo_url");
+                nameString = intent.getStringExtra("name");
             } else {
                 Log.v("eeeeeeee", "无法获得intent！");
             }
@@ -341,7 +343,7 @@ public class choose_filter extends AppCompatActivity {
                 }
             });
             TextView name = (TextView) view.findViewById(R.id.filter_name);
-            name.setText("FF");
+            name.setText(nameString);
 
             filterLayout.addView(view);
 
@@ -354,7 +356,7 @@ public class choose_filter extends AppCompatActivity {
 
                 galleryIntent.putExtra("choose",0);
                 galleryIntent.putExtra("needResult",true);
-                startActivityForResult(intent, filters_REQUEST_CODE);
+                startActivityForResult(galleryIntent, filters_REQUEST_CODE);
             }
             else {
                 Log.v("EEEEEEEEEEE ", "返回码不大于0.");

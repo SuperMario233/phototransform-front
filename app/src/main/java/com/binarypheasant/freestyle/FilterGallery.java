@@ -92,6 +92,7 @@ public class FilterGallery extends AppCompatActivity {
                         public void onClick(DialogInterface dialogInterface, int i) {
                             Intent intent1 = new Intent();
                             intent1.putExtra("photo_url",filter.photo_url);
+                            intent1.putExtra("name",filter.getFilterName());
                             setResult(filter.ID,intent1);
                             finish();
                         }
