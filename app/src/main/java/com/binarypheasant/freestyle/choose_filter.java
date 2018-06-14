@@ -53,10 +53,11 @@ public class choose_filter extends AppCompatActivity {
     private String photoPath;
     private Bitmap photo; // 应该是从相机或者相册中获得，考虑使用Intent传递？
     private Bitmap renderPhoto = null;
-    private String renderURL = "http://47.92.69.29:8000/render2";
+    private String renderURL = "http://47.92.69.29:8000/render3";
     private String filterStr = null;
 
     private static final int filters_REQUEST_CODE = 1;
+    private static final int login_REQUEST_CODE = 2;
 
 
     @Override
@@ -302,15 +303,9 @@ public class choose_filter extends AppCompatActivity {
     }
 
     public void onClickMoreFilters(View view) {
-        Toast.makeText(choose_filter.this, "你点击了\"更多滤镜\"", Toast.LENGTH_SHORT).show();
-        // ToDO: 打开滤镜画廊，获取滤镜后添加到filters[]中，然后重新加载滤镜显示栏，并把新的排到前面
-        Intent intent = new Intent(choose_filter.this, FilterGallery.class);
-        // check sessionKey first
-
-        //
-        intent.putExtra("choose",0);
+        Intent intent = new Intent(choose_filter.this, profile_main.class);
         intent.putExtra("needResult",true);
-        startActivityForResult(intent, filters_REQUEST_CODE);
+        startActivityForResult(intent, login_REQUEST_CODE);
     }
 
 
@@ -337,6 +332,7 @@ public class choose_filter extends AppCompatActivity {
             if (url == null) Log.v("EEEEEEEE", "URL为null！");
             else Log.v("URL", url);
             myImageView.setImageURL(url);
+            myImageView.setTag(resultCode);
             myImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -352,11 +348,23 @@ public class choose_filter extends AppCompatActivity {
             // 滑动到最后
 //            HorizontalScrollView hsv = (HorizontalScrollView) findViewById(R.id.filterScroll);
 //            hsv.scrollTo(HorizontalScrollView.FOCUS_RIGHT, 0);
-        } else {
+        } else if (requestCode == login_REQUEST_CODE) {
+            if (resultCode > 0) {
+                Intent galleryIntent = new Intent(choose_filter.this, FilterGallery.class);
+
+                galleryIntent.putExtra("choose",0);
+                galleryIntent.putExtra("needResult",true);
+                startActivityForResult(intent, filters_REQUEST_CODE);
+            }
+            else {
+                Log.v("EEEEEEEEEEE ", "返回码不大于0.");
+                Toast.makeText(choose_filter.this, "未登录无法使用该功能。", Toast.LENGTH_SHORT).show();
+            }
+        }
+        else {
             Log.v("eeeeee", "请求码错误！");
         }
     }
-
 
 //    public void onClickEdit(View view) {
 //        Toast.makeText(choose_filter.this, "你点击了\"编辑\"", Toast.LENGTH_SHORT).show();
