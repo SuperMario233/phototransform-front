@@ -56,9 +56,14 @@ public class prepublish extends AppCompatActivity {
         final Bitmap tempphoto = BitmapFactory.decodeResource(getResources(), R.drawable.selfie_maniac);
         Intent getImageInt=getIntent();
         imagePath=getImageInt.getStringExtra("imagePath");
-        Bitmap imageGet=BitmapFactory.decodeFile(imagePath);
-        mainImage.setImageBitmap(tempphoto);
-        //mainImage.setImageBitmap(imageGet);
+        //mainImage.setImageBitmap(tempphoto);
+        if(imagePath!=null) {
+            Bitmap imageGet = BitmapFactory.decodeFile(imagePath);
+            mainImage.setImageBitmap(imageGet);
+        }
+        else{
+            Toast.makeText(prepublish.this,"获取图片失败",Toast.LENGTH_SHORT).show();
+        }
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,12 +95,17 @@ public class prepublish extends AppCompatActivity {
         share.setOnClickListener(new View.OnClickListener() {//ToDo
             @Override
             public void onClick(View view) {
-                //File imageFile=new File(imagePath);
-                //UMImage image=new UMImage(prepublish.this,imageFile);
-                UMImage tempimage=new UMImage(prepublish.this,tempphoto);
-                Log.v("","startshare");
-                new ShareAction(prepublish.this).withText("FreeStyle").withMedia(tempimage).setDisplayList(SHARE_MEDIA.SINA,SHARE_MEDIA.QQ,SHARE_MEDIA.WEIXIN)
-                        .setCallback(umShareListener).open();
+                if(imagePath!=null) {
+                    File imageFile = new File(imagePath);
+                    UMImage image = new UMImage(prepublish.this, imageFile);
+                    UMImage tempimage = new UMImage(prepublish.this, tempphoto);
+                    Log.v("", "startshare");
+                    new ShareAction(prepublish.this).withText("FreeStyle").withMedia(tempimage).setDisplayList(SHARE_MEDIA.SINA, SHARE_MEDIA.QQ, SHARE_MEDIA.WEIXIN)
+                            .setCallback(umShareListener).open();
+                }
+                else {
+                    Toast.makeText(prepublish.this,"分享失败",Toast.LENGTH_SHORT);
+                }
             }
         });
         edit.setOnClickListener(new View.OnClickListener() {
