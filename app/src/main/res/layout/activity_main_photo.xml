@@ -11,7 +11,7 @@
     android:layout_height="50dp">
 
     <ImageView
-        android:id="@+id/sign_in"
+        android:id="@+id/sign_in_old"
         android:layout_width="50dp"
         android:layout_height="50dp"
         app:srcCompat="@android:drawable/sym_def_app_icon"
@@ -30,7 +30,7 @@
         tools:layout_editor_absoluteY="0dp" />
 
     <ImageView
-        android:id="@+id/gallery"
+        android:id="@+id/gallery_old"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_alignParentBottom="true"
@@ -46,7 +46,7 @@
         android:layout_height="400dp">
 
         <ImageView
-            android:id="@+id/photo_show"
+            android:id="@+id/photo_show_old"
             android:layout_width="300dp"
             android:layout_height="400dp"
             android:layout_alignParentTop="true"
@@ -57,20 +57,21 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="40dp">
-    <ImageView
-        android:id="@+id/photo_button"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        app:srcCompat="@android:drawable/ic_menu_camera"
-        tools:layout_editor_absoluteX="172dp"
-        tools:layout_editor_absoluteY="473dp" />
+
+        <ImageView
+            android:id="@+id/photo_button_old"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            app:srcCompat="@android:drawable/ic_menu_camera"
+            tools:layout_editor_absoluteX="172dp"
+            tools:layout_editor_absoluteY="473dp" />
     </RelativeLayout>
 
 
     <Button
-        android:id="@+id/testbutton"
+        android:id="@+id/testbutton_old"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Button" />
