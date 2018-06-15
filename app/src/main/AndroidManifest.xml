@@ -19,14 +19,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme.NoActionBar">
         <activity
             android:name=".LoginActivity"
             android:label="@string/app_name" />
         <activity
             android:name="com.tencent.tauth.AuthActivity"
-            android:launchMode="singleTask"
-            android:noHistory="true">
+
+            >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -49,8 +49,8 @@
         </activity>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
-            android:authorities="com.binarypheasant.freestyle.fileprovider"
+            android:name="com.binarypheasant.freestyle.subFileProvider"
+            android:authorities="com.binarypheasant.freestyle.subFileProvider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -58,6 +58,19 @@
                 android:resource="@xml/provider_path" />
         </provider>
 
+        <activity android:name=".prepublish"/>
+        <activity
+            android:name="com.umeng.socialize.media.WBShareCallBackActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:exported="false"
+            >
+        </activity>
+        <activity android:name="com.sina.weibo.sdk.web.WeiboSdkWebActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            />
 
         <activity
             android:name=".log_in"
@@ -69,6 +82,21 @@
         <activity android:name=".choose_filter">
         </activity>
 
+        <activity
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:launchMode="singleTask"
+            android:name="com.sina.weibo.sdk.share.WbShareTransActivity">
+            <intent-filter>
+                <action android:name="com.sina.weibo.sdk.action.ACTION_SDK_REQ_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:exported="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
         <activity
             android:name=".profile"
             android:label="@string/title_activity_profile"

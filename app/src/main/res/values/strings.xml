@@ -31,10 +31,21 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
     <string name="choose_filter">选择滤镜</string>
+
     <string name="title_activity_filterlist">filterlist</string>
     <string name="tab_text_1">热度最高</string>
     <string name="tab_text_2">最近使用</string>
     <string name="tab_text_3">我的收藏</string>
     <string name="section_format">Hello World from section: %1$d</string>
+
+    <string name="user_center">用户中心</string>
+    <string name="gallery_choose"> 相册选图</string>
+    <string name="camera_choose"> 拍摄图片</string>
+    <string name="finish_render">渲染完成</string>
+    <string name="abandon">放弃</string>
+    <string name="save">保存</string>
+    <string name="edit">编辑</string>
+    <string name="share">分享</string>
+    <string name="publish">发布</string>
 
 </resources>

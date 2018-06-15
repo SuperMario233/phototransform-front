@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="360dp"
+        android:layout_height="37dp"
+        android:fontFamily="Roboto"
+        android:gravity="center"
+        android:left="0dp"
+        android:text="@string/finish_render"
+        android:textColor="#ff000000"
+        android:textSize="20sp"
+        android:top="23dp" />
+
+    <ImageView
+        android:id="@+id/back"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="2dp"
+        android:left="0dp"
+        android:top="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_times_32" />
+
+    <TextView
+        android:layout_width="29dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="Roboto"
+        android:gravity="center"
+        android:left="30dp"
+        android:text="@string/abandon"
+        android:textColor="#ff000000"
+        android:textSize="14sp"
+        android:top="29dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="29dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="289dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="Roboto"
+        android:gravity="center"
+        android:left="289dp"
+        android:text="@string/save"
+        android:textColor="#ff000000"
+        android:textSize="14sp"
+        android:top="29dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/save"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="320dp"
+        android:layout_marginTop="2dp"
+        android:left="320dp"
+        android:top="25dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_save_50" />
+
+    <ImageView
+        android:id="@+id/main_image"
+        android:layout_width="342dp"
+        android:layout_height="440dp"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="47dp"
+        android:gravity="center"
+        android:left="9dp"
+        android:top="70dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:layout_width="360dp"
+        android:layout_height="62dp"
+        android:layout_marginTop="507dp"
+        android:background="?attr/colorButtonNormal"
+        android:gravity="center"
+        android:left="0dp"
+        android:top="530dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:color/transparent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <ImageView
+        android:id="@+id/edit"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="517dp"
+        android:left="29dp"
+        android:top="540dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_edit_52" />
+
+    <ImageView
+        android:id="@+id/share"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="120dp"
+        android:layout_marginTop="517dp"
+        android:left="29dp"
+        android:top="540dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_menu_share" />
+
+    <ImageView
+        android:id="@+id/filter_pub"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="210dp"
+        android:layout_marginTop="517dp"
+        android:left="210dp"
+        android:top="540dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/icons8_news_90" />
+
+    <TextView
+        android:layout_width="29dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="547dp"
+        android:fontFamily="Roboto"
+        android:gravity="center"
+        android:left="30dp"
+        android:text="@string/edit"
+        android:textColor="#ff000000"
+        android:textSize="14sp"
+        android:top="570dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="29dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="121dp"
+        android:layout_marginTop="547dp"
+        android:fontFamily="Roboto"
+        android:gravity="center"
+        android:left="121dp"
+        android:text="@string/share"
+        android:textColor="#ff000000"
+        android:textSize="14sp"
+        android:top="570dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:layout_width="29dp"
+        android:layout_height="23dp"
+        android:layout_marginStart="211dp"
+        android:layout_marginTop="547dp"
+        android:fontFamily="Roboto"
+        android:gravity="center"
+        android:left="211dp"
+        android:text="@string/publish"
+        android:textColor="#ff000000"
+        android:textSize="14sp"
+        android:top="570dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+</android.support.constraint.ConstraintLayout>
